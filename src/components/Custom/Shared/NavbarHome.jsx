@@ -1,0 +1,79 @@
+import React from 'react';
+import { Navigate, NavLink } from 'react-router-dom';
+import { Avatar, AvatarImage } from '../../ui/avatar';
+import {
+   DropdownMenu,
+   DropdownMenuContent,
+   DropdownMenuItem,
+   DropdownMenuLabel,
+   DropdownMenuSeparator,
+   DropdownMenuTrigger,
+} from '../../ui/dropdown-menu';
+import { Bell } from 'lucide-react';
+import navIcon from '../../../assets/icons/express-delivery.png';
+
+import { Button } from '../../ui/button';
+
+const NavbarHome = () => {
+   return (
+      <nav className="px-1.5 md:px-3 lg:px-4 py-3  bg-teal-600 shadow-md ">
+         <div className="flex justify-between items-center ">
+            <div className="flex justify-start items-center gap-1">
+               <img className="w-11" src={navIcon} alt="navIcon" />
+               <h2 className="text-xl font-bold text-white tracking-wide">
+                  Parcel<span className="text-amber-500">Pro</span>
+               </h2>
+            </div>
+
+            <ul className="list-none flex justify-end items-center gap-4 md:gap-5 lg:gap-5 text-white">
+               <li>
+                  <NavLink className="hover:text-gray-200 transition-colors">
+                     Home
+                  </NavLink>
+               </li>
+               <li className="relative">
+                  <NavLink to={'/order'} className="hover:text-gray-200">
+                     <Bell className="w-5 h-5" />
+                     <span className="absolute -top-1 -right-0.5 h-2.5 w-2.5 rounded-full bg-red-600"></span>
+                  </NavLink>
+               </li>
+               <li>
+                  <NavLink
+                     to={'/login'}
+                     className="hover:text-gray-200 transition-colors"
+                  >
+                     <Button
+                        className={
+                           'cursor-pointer bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-4 rounded-lg shadow-md transition duration-300"'
+                        }
+                     >
+                        Login
+                     </Button>
+                  </NavLink>
+               </li>
+               <li>
+                  <DropdownMenu>
+                     <DropdownMenuTrigger className="cursor-pointer">
+                        <Avatar className="border-2 border-blue-600 hover:scale-105 transition-transform">
+                           <AvatarImage src="https://i.ibb.co.com/VYHK0CGK/user-1.png" />
+                        </Avatar>
+                     </DropdownMenuTrigger>
+                     <DropdownMenuContent className="w-48">
+                        <DropdownMenuLabel className="text-sm text-gray-600">
+                           Rafi220330@gmail.com
+                        </DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem>
+                           <NavLink>Dashboard</NavLink>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>Logout</DropdownMenuItem>
+                     </DropdownMenuContent>
+                  </DropdownMenu>
+               </li>
+            </ul>
+         </div>
+      </nav>
+   );
+};
+
+export default NavbarHome;
