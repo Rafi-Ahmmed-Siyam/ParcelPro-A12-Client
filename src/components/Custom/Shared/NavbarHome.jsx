@@ -58,13 +58,13 @@ const NavbarHome = () => {
                            <AvatarImage src="https://i.ibb.co.com/VYHK0CGK/user-1.png" />
                         </Avatar>
                      </DropdownMenuTrigger>
-                     <DropdownMenuContent className="w-48">
+                     <DropdownMenuContent className="w-48 ">
                         <DropdownMenuLabel className="text-sm text-gray-600">
                            Rafi220330@gmail.com
                         </DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem>
-                           <NavLink>Dashboard</NavLink>
+                           <NavLink to={'/dashboard'}>Dashboard</NavLink>
                         </DropdownMenuItem>
                         <DropdownMenuItem>Logout</DropdownMenuItem>
                      </DropdownMenuContent>

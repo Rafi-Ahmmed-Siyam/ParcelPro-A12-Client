@@ -1,5 +1,7 @@
 import { Package, ShieldCheck, Truck } from 'lucide-react';
 import React from 'react';
+import { FaShippingFast } from 'react-icons/fa';
+import { MdManageHistory } from 'react-icons/md';
 
 const Features = () => {
    return (
@@ -21,6 +23,7 @@ const Features = () => {
                {/* Feature 1 */}
                <div className="bg-white p-8 rounded-2xl shadow hover:shadow-lg transition">
                   <ShieldCheck className="size-12 text-blue-500 mb-4" />
+
                   <h3 className="text-xl font-semibold mb-2">Parcel Safety</h3>
                   <p className="text-gray-600">
                      Your parcels are always protected with top-notch security
@@ -30,7 +33,8 @@ const Features = () => {
 
                {/* Feature 2 */}
                <div className="bg-white p-8 rounded-2xl shadow hover:shadow-lg transition">
-                  <Truck className="size-12 text-blue-500 mb-4" />
+                  {/* <Truck className="size-12 text-blue-500 mb-4" /> */}
+                  <FaShippingFast className="text-blue-500 mb-4 size-11" />
                   <h3 className="text-xl font-semibold mb-2">
                      Super Fast Delivery
                   </h3>
@@ -42,7 +46,8 @@ const Features = () => {
 
                {/* Feature 3 */}
                <div className="bg-white p-8 rounded-2xl shadow hover:shadow-lg transition">
-                  <Package className="size-12 text-blue-500 mb-4" />
+                  {/* <Package className="size-12 text-blue-500 mb-4" /> */}
+                  <MdManageHistory className="size-12 text-blue-500 mb-4" />
                   <h3 className="text-xl font-semibold mb-2">
                      Easy Parcel Management
                   </h3>
