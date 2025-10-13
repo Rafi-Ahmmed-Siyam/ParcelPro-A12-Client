@@ -9,13 +9,15 @@ import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { FcGoogle } from 'react-icons/fc';
 import { Eye, EyeOff } from 'lucide-react'; // lucide-react icon import
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import GoogleSignInButton from './GoogleSignInButton';
+import useAuth from '@/hooks/Custom/useAuth';
 
 const Login = () => {
    const [showPassword, setShowPassword] = useState(false);
+   const { signIn } = useAuth();
    const {
       register,
       handleSubmit,
@@ -23,8 +25,13 @@ const Login = () => {
       formState: { errors },
    } = useForm();
 
-   const handleSubmitLogin = (data) => {
-      console.log(data);
+   const handleSubmitLogin = async (data) => {
+      const { email, password } = data || {};
+      try {
+         await signIn(email, password);
+      } catch (err) {
+         console.log(err);
+      }
    };
 
    return (
@@ -50,23 +57,32 @@ const Login = () => {
                               id="email"
                               type="email"
                               placeholder="m@example.com"
-                              {...register('email', { required: true })}
+                              {...register('email', {
+                                 required: 'Email is required',
+                              })}
                            />
-                           {errors.email?.type === 'required' && (
-                              <p className="text-red-500 text-sm mt-1">
-                                 Email is required
+                           {errors.email && (
+                              <p className="text-red-500 text-sm ">
+                                 {errors.email.message}
                               </p>
                            )}
                         </Field>
                         <Field className="relative">
                            <FieldLabel htmlFor="password">Password</FieldLabel>
                            <Input
+                              // required
                               id="password"
                               type={showPassword ? 'text' : 'password'}
-                              required
                               className="pr-10" // icon space
-                              {...register('password', { required: true })}
+                              {...register('password', {
+                                 required: 'Password is required.',
+                              })}
                            />
+                           {errors.password?.type === 'required' && (
+                              <p className="text-red-500 text-sm ">
+                                 {errors.password.message}
+                              </p>
+                           )}
                            <button
                               type="button"
                               className="absolute left-[270px] md:left-[275px] lg:left-[350px]  top-10"
@@ -91,19 +107,9 @@ const Login = () => {
                            </Button>
                         </Field>
                      </div>
-                     <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card my-5">
-                        Or continue with
-                     </FieldSeparator>
-                     <Field>
-                        <Button
-                           variant="outline"
-                           type="button"
-                           className="w-full flex items-center justify-center gap-2 cursor-pointer"
-                        >
-                           <FcGoogle className="size-6" />
-                           Continue with Google
-                        </Button>
-                     </Field>
+
+                     <GoogleSignInButton />
+
                      <FieldDescription className="text-center pt-3.5">
                         Don&apos;t have an account?{' '}
                         <Link to={'/signup'}>Signup</Link>

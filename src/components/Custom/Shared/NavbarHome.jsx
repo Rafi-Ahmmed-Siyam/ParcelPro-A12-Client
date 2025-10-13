@@ -13,10 +13,11 @@ import { Bell, LayoutDashboard, LogOut } from 'lucide-react';
 import navIcon from '../../../assets/icons/express-delivery.png';
 
 import { Button } from '../../ui/button';
-import { MdSpaceDashboard } from 'react-icons/md';
-import { IoLogOut } from 'react-icons/io5';
+import useAuth from '@/hooks/Custom/useAuth';
 
 const NavbarHome = () => {
+   const { user, logOut } = useAuth();
+   // console.log(user);
    return (
       <nav className="px-1.5 md:px-3 lg:px-4 py-3  bg-teal-600 shadow-md ">
          <div className="flex justify-between items-center ">
@@ -39,53 +40,76 @@ const NavbarHome = () => {
                      <span className="absolute -top-1 -right-0.5 h-2.5 w-2.5 rounded-full bg-red-600"></span>
                   </NavLink>
                </li>
-               <li>
-                  <NavLink
-                     to={'/login'}
-                     className="hover:text-gray-200 transition-colors"
-                  >
-                     <Button
-                        className={
-                           'cursor-pointer bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-4 rounded-lg shadow-md transition duration-300"'
-                        }
-                     >
-                        Login
-                     </Button>
-                  </NavLink>
-               </li>
-               <li>
-                  <DropdownMenu>
-                     <DropdownMenuTrigger className="cursor-pointer">
-                        <Avatar className="border-2 border-blue-600 hover:scale-105 transition-transform">
-                           <AvatarImage src="https://i.ibb.co.com/VYHK0CGK/user-1.png" />
-                        </Avatar>
-                     </DropdownMenuTrigger>
-                     <DropdownMenuContent className="w-48 ">
-                        <DropdownMenuLabel className="text-sm text-gray-600">
-                           Rafi220330@gmail.com
-                        </DropdownMenuLabel>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem>
-                           <NavLink
-                              to={'/dashboard'}
-                              className={
-                                 'flex justify-start items-center gap-1.5'
-                              }
+               {user ? (
+                  <li>
+                     {/* Dropdown */}
+                     <DropdownMenu>
+                        <DropdownMenuTrigger className="cursor-pointer">
+                           <div
+                              tabIndex={0}
+                              role="button"
+                              className="btn btn-ghost btn-circle avatar"
                            >
-                              <LayoutDashboard
-                                 strokeWidth={2.25}
-                                 className="size-4"
-                              />{' '}
-                              Dashboard
-                           </NavLink>
-                        </DropdownMenuItem>
-                        <Button className={'w-full cursor-pointer mt-3'}>
-                           <LogOut className="size-4" /> Logout
+                              <div className="w-10 rounded-full">
+                                 <img
+                                    alt="user image"
+                                    src={
+                                       user?.photoURL ||
+                                       `https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp`
+                                    }
+                                 />
+                              </div>
+                           </div>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent
+                           className="w-52 "
+                           align="end"
+                           sideOffset={4}
+                        >
+                           <DropdownMenuLabel className="text-sm text-gray-600">
+                              {user?.email}
+                           </DropdownMenuLabel>
+                           <DropdownMenuSeparator />
+                           <DropdownMenuItem>
+                              <NavLink
+                                 to={'/dashboard'}
+                                 className={
+                                    'flex justify-start items-center gap-1.5'
+                                 }
+                              >
+                                 <LayoutDashboard
+                                    strokeWidth={2.25}
+                                    className="size-4"
+                                 />{' '}
+                                 Dashboard
+                              </NavLink>
+                           </DropdownMenuItem>
+                           <Button
+                              onClick={() => logOut()}
+                              className={'w-full cursor-pointer mt-3'}
+                           >
+                              <LogOut className="size-4" /> Logout
+                           </Button>
+                           {/* <DropdownMenuItem>Logout</DropdownMenuItem> */}
+                        </DropdownMenuContent>
+                     </DropdownMenu>
+                  </li>
+               ) : (
+                  <li>
+                     <NavLink
+                        to={'/login'}
+                        className="hover:text-gray-200 transition-colors"
+                     >
+                        <Button
+                           className={
+                              'cursor-pointer bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-4 rounded-lg shadow-md transition duration-300"'
+                           }
+                        >
+                           Login
                         </Button>
-                        {/* <DropdownMenuItem>Logout</DropdownMenuItem> */}
-                     </DropdownMenuContent>
-                  </DropdownMenu>
-               </li>
+                     </NavLink>
+                  </li>
+               )}
             </ul>
          </div>
       </nav>
