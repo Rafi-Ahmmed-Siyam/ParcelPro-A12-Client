@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navigate, NavLink } from 'react-router-dom';
+import { Link, Navigate, NavLink } from 'react-router-dom';
 import { Avatar, AvatarImage } from '../../ui/avatar';
 import {
    DropdownMenu,
@@ -9,21 +9,23 @@ import {
    DropdownMenuSeparator,
    DropdownMenuTrigger,
 } from '../../ui/dropdown-menu';
-import { Bell } from 'lucide-react';
+import { Bell, LayoutDashboard, LogOut } from 'lucide-react';
 import navIcon from '../../../assets/icons/express-delivery.png';
 
 import { Button } from '../../ui/button';
+import { MdSpaceDashboard } from 'react-icons/md';
+import { IoLogOut } from 'react-icons/io5';
 
 const NavbarHome = () => {
    return (
       <nav className="px-1.5 md:px-3 lg:px-4 py-3  bg-teal-600 shadow-md ">
          <div className="flex justify-between items-center ">
-            <div className="flex justify-start items-center gap-1">
+            <Link to={'/'} className="flex justify-start items-center gap-1">
                <img className="w-11" src={navIcon} alt="navIcon" />
                <h2 className="text-xl font-bold text-white tracking-wide">
                   Parcel<span className="text-amber-500">Pro</span>
                </h2>
-            </div>
+            </Link>
 
             <ul className="list-none flex justify-end items-center gap-4 md:gap-5 lg:gap-5 text-white">
                <li>
@@ -64,9 +66,23 @@ const NavbarHome = () => {
                         </DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem>
-                           <NavLink to={'/dashboard'}>Dashboard</NavLink>
+                           <NavLink
+                              to={'/dashboard'}
+                              className={
+                                 'flex justify-start items-center gap-1.5'
+                              }
+                           >
+                              <LayoutDashboard
+                                 strokeWidth={2.25}
+                                 className="size-4"
+                              />{' '}
+                              Dashboard
+                           </NavLink>
                         </DropdownMenuItem>
-                        <DropdownMenuItem>Logout</DropdownMenuItem>
+                        <Button className={'w-full cursor-pointer mt-3'}>
+                           <LogOut className="size-4" /> Logout
+                        </Button>
+                        {/* <DropdownMenuItem>Logout</DropdownMenuItem> */}
                      </DropdownMenuContent>
                   </DropdownMenu>
                </li>

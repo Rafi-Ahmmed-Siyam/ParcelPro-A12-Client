@@ -1,8 +1,3 @@
-import React, { useState } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { FcGoogle } from 'react-icons/fc';
 import {
    Field,
    FieldGroup,
@@ -10,22 +5,41 @@ import {
    FieldDescription,
    FieldSeparator,
 } from '@/components/ui/field';
+import React, { useState } from 'react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { FcGoogle } from 'react-icons/fc';
 import { Eye, EyeOff } from 'lucide-react'; // lucide-react icon import
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 
 const Login = () => {
    const [showPassword, setShowPassword] = useState(false);
+   const {
+      register,
+      handleSubmit,
+      watch,
+      formState: { errors },
+   } = useForm();
+
+   const handleSubmitLogin = (data) => {
+      console.log(data);
+   };
 
    return (
       <section className="bg-muted flex min-h-svh flex-col items-center justify-center p-6 md:p-10">
          <div className="w-full max-w-sm md:max-w-4xl">
             <Card className="overflow-hidden p-0">
                <CardContent className="grid p-0 md:grid-cols-2">
-                  <form className="p-6 md:p-8">
+                  <form
+                     onSubmit={handleSubmit(handleSubmitLogin)}
+                     className="p-6 md:p-8"
+                  >
                      <div className="flex flex-col items-center gap-2 text-center mb-5">
                         <h1 className="text-2xl font-bold">Welcome back</h1>
                         <p className="text-muted-foreground text-balance">
-                           Login to your Parcel account
+                           Login to your ParcelPro account
                         </p>
                      </div>
                      {/* Inputs Container */}
@@ -36,8 +50,13 @@ const Login = () => {
                               id="email"
                               type="email"
                               placeholder="m@example.com"
-                              required
+                              {...register('email', { required: true })}
                            />
+                           {errors.email?.type === 'required' && (
+                              <p className="text-red-500 text-sm mt-1">
+                                 Email is required
+                              </p>
+                           )}
                         </Field>
                         <Field className="relative">
                            <FieldLabel htmlFor="password">Password</FieldLabel>
@@ -46,6 +65,7 @@ const Login = () => {
                               type={showPassword ? 'text' : 'password'}
                               required
                               className="pr-10" // icon space
+                              {...register('password', { required: true })}
                            />
                            <button
                               type="button"
@@ -86,7 +106,7 @@ const Login = () => {
                      </Field>
                      <FieldDescription className="text-center pt-3.5">
                         Don&apos;t have an account?{' '}
-                        <NavLink to={'/signup'}>Signup</NavLink>
+                        <Link to={'/signup'}>Signup</Link>
                      </FieldDescription>
                   </form>
                   <div className="bg-muted relative hidden md:block">
