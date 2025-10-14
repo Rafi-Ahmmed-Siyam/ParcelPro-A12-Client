@@ -10,7 +10,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Eye, EyeOff } from 'lucide-react'; // lucide-react icon import
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import GoogleSignInButton from './GoogleSignInButton';
 import useAuth from '@/hooks/Custom/useAuth';
@@ -18,17 +18,21 @@ import useAuth from '@/hooks/Custom/useAuth';
 const Login = () => {
    const [showPassword, setShowPassword] = useState(false);
    const { signIn } = useAuth();
+   const location = useLocation();
+   const navigate = useNavigate();
    const {
       register,
       handleSubmit,
-      watch,
       formState: { errors },
    } = useForm();
+   const from = location?.state?.from?.pathname || '/';
+   // console.log(from);
 
    const handleSubmitLogin = async (data) => {
       const { email, password } = data || {};
       try {
          await signIn(email, password);
+         navigate(from, { replace: true });
       } catch (err) {
          console.log(err);
       }
@@ -108,7 +112,7 @@ const Login = () => {
                         </Field>
                      </div>
 
-                     <GoogleSignInButton />
+                     <GoogleSignInButton from={from} />
 
                      <FieldDescription className="text-center pt-3.5">
                         Don&apos;t have an account?{' '}

@@ -9,7 +9,7 @@ import {
    FieldSeparator,
 } from '@/components/ui/field';
 import { Eye, EyeOff } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import {
    Select,
@@ -29,19 +29,20 @@ import GoogleSignInButton from './GoogleSignInButton';
 const Signup = () => {
    const [showPassword, setShowPassword] = useState(false);
    const { loading, createUser, updateUserProfile } = useAuth();
+   const location = useLocation();
+   const navigate = useNavigate();
    const {
       register,
       handleSubmit,
-      watch,
       setValue,
       formState: { errors },
    } = useForm();
+   const from = location?.state?.from?.pathname || '/';
 
    const handleSignup = async (data) => {
       const { name, email, image, role, password } = data || {};
-      console.log(data);
-      let imageUrl = 'https://i.ibb.co.com/PZQZ8Lc7/user.png';
 
+      let imageUrl = 'https://i.ibb.co.com/PZQZ8Lc7/user.png';
       if (image && image?.length > 0) {
          const img = await uploadImage(image);
          imageUrl = img;
@@ -51,6 +52,7 @@ const Signup = () => {
       try {
          await createUser(email, password);
          await updateUserProfile(name, imageUrl);
+         navigate(from, { replace: true });
       } catch (err) {
          console.log(err);
       }
@@ -164,7 +166,7 @@ const Signup = () => {
                      </Button>
                   </Field>
 
-                  <GoogleSignInButton />
+                  <GoogleSignInButton from={from} />
 
                   <FieldDescription className="text-center pt-3.5">
                      Already have an account? <Link to={'/login'}>Sign in</Link>

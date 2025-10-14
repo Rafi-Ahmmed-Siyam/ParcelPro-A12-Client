@@ -5,6 +5,7 @@ import Signup from '@/Pages/Authentication/Signup';
 import HomePage from '@/Pages/HomePage';
 import Order from '@/Pages/Order';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import PrivetRoute from './PrivetRoute';
 
 const router = createBrowserRouter([
    {
@@ -17,7 +18,11 @@ const router = createBrowserRouter([
          },
          {
             path: 'order',
-            element: <Order />,
+            element: (
+               <PrivetRoute>
+                  <Order />
+               </PrivetRoute>
+            ),
          },
       ],
    },
@@ -31,7 +36,11 @@ const router = createBrowserRouter([
    },
    {
       path: 'dashboard',
-      element: <DashboardLayout />,
+      element: (
+         <PrivetRoute>
+            <DashboardLayout />
+         </PrivetRoute>
+      ),
    },
 ]);
 

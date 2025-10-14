@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link, Navigate, NavLink } from 'react-router-dom';
-import { Avatar, AvatarImage } from '../../ui/avatar';
 import {
    DropdownMenu,
    DropdownMenuContent,
