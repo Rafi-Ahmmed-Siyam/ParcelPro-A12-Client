@@ -3,8 +3,11 @@ import navIcon from '../../assets/Icons/express-delivery.png';
 import { Link, NavLink } from 'react-router-dom';
 import { CgProfile } from 'react-icons/cg';
 import { LogOut } from 'lucide-react';
+import useAuth from '@/hooks/Custom/useAuth';
+import { Button } from '@/components/ui/button';
 
 const Sidebar = () => {
+   const { user, logOut } = useAuth();
    return (
       <aside className="drawer-side">
          <label
@@ -25,20 +28,22 @@ const Sidebar = () => {
             {/* ---------- Middle Navigation Links ---------- */}
             <ul className="mt-6 space-y-1 flex-1">
                <li>
-                  <a className="hover:bg-blue-100 rounded-lg block p-2">Home</a>
+                  <a className="hover:bg-blue-100 rounded-lg block px-2.5 py-1.5">
+                     Home
+                  </a>
                </li>
                <li>
-                  <a className="hover:bg-blue-100 rounded-lg block p-2">
+                  <a className="hover:bg-blue-100 rounded-lg block px-2.5 py-1.5">
                      My Parcels
                   </a>
                </li>
                <li>
-                  <a className="hover:bg-blue-100 rounded-lg block p-2">
+                  <a className="hover:bg-blue-100 rounded-lg block px-2.5 py-1.5">
                      Add Parcel
                   </a>
                </li>
                <li>
-                  <a className="hover:bg-blue-100 rounded-lg block p-2">
+                  <a className="hover:bg-blue-100 rounded-lg block px-2.5 py-1.5">
                      Settings
                   </a>
                </li>
@@ -46,12 +51,17 @@ const Sidebar = () => {
 
             {/* ---------- Bottom Section ---------- */}
             <div className="border-t pt-4 space-y-1">
-               <NavLink className="hover:bg-blue-100 rounded-lg  p-2 flex justify-start items-center gap-1">
+               <NavLink className="hover:bg-blue-100 rounded-lg  px-2.5 py-1.5 flex justify-start items-center gap-1">
                   <CgProfile className="size-5" /> <span>My Profile</span>
                </NavLink>
-               <NavLink className="hover:bg-blue-100 rounded-lg p-2 text-red-500 flex justify-start items-center gap-1">
-                  <LogOut className="size-5" /> <span>Logout</span>
-               </NavLink>
+               {/* ---------- */}
+               <Button
+                  onClick={() => logOut()}
+                  variant="ghost"
+                  className="w-full cursor-pointer mt-1 justify-start hover:bg-blue-100 rounded-lg hover:text-red-600 text-red-500"
+               >
+                  <LogOut className="size-5" /> Logout
+               </Button>
             </div>
          </nav>
       </aside>

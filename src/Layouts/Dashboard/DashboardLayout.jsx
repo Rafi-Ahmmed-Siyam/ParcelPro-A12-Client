@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { FaBars } from 'react-icons/fa';
 import Sidebar from './Sidebar';
 const DashboardLayout = () => {
+   
    return (
       <div className="drawer lg:drawer-open  bg-base-100 max-w-full lg:container mx-auto">
          {/* Drawer toggle (for mobile) */}

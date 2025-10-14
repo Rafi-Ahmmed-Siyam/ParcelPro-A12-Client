@@ -1,20 +1,30 @@
 import { Button } from '@/components/ui/button';
 import { Field, FieldSeparator } from '@/components/ui/field';
 import useAuth from '@/hooks/Custom/useAuth';
+import useAxiosPublic from '@/hooks/Custom/useAxiosPublic';
 
 import React from 'react';
 import { FcGoogle } from 'react-icons/fc';
 import { useNavigate } from 'react-router-dom';
 
 const GoogleSignInButton = ({ from }) => {
-   const { googleSignIn } = useAuth();
+   const { googleSignIn, setLoading } = useAuth();
    const navigate = useNavigate();
+   const axiosPublic = useAxiosPublic();
    const handleGoogleLogin = async () => {
       try {
-         await googleSignIn();
+         const { user } = await googleSignIn();
+         console.log(user.email, user.photoURL);
+         const { data } = await axiosPublic.post('/users', {
+            email: user.email,
+            image: user?.photoURL,
+            role: 'User',
+         });
+         console.log(data);
          navigate(from, { replace: true });
       } catch (err) {
          console.log(err);
+         setLoading(false);
       }
    };
    return (

@@ -14,10 +14,11 @@ import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import GoogleSignInButton from './GoogleSignInButton';
 import useAuth from '@/hooks/Custom/useAuth';
+import { LiaSpinnerSolid } from 'react-icons/lia';
 
 const Login = () => {
    const [showPassword, setShowPassword] = useState(false);
-   const { signIn } = useAuth();
+   const { signIn, loading } = useAuth();
    const location = useLocation();
    const navigate = useNavigate();
    const {
@@ -106,8 +107,16 @@ const Login = () => {
                            </a>
                         </Field>
                         <Field className={'mt-2'}>
-                           <Button className={'cursor-pointer'} type="submit">
-                              Login
+                           <Button
+                              disabled={loading}
+                              type="submit"
+                              className="w-full cursor-pointer"
+                           >
+                              {loading ? (
+                                 <LiaSpinnerSolid className="animate-spin" />
+                              ) : (
+                                 'Sign In'
+                              )}
                            </Button>
                         </Field>
                      </div>

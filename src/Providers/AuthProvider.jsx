@@ -10,13 +10,15 @@ import {
    signOut,
 } from 'firebase/auth';
 import { auth } from '@/Firebase.config';
+import useAxiosPublic from '@/hooks/Custom/useAxiosPublic';
 
 export const AuthContext = createContext(null);
 const AuthProvider = ({ children }) => {
    const [user, setUser] = useState({ name: 'siyam' });
    const [loading, setLoading] = useState(true);
-   const googleProvider = new GoogleAuthProvider();
+   const axiosPublic = useAxiosPublic();
 
+   const googleProvider = new GoogleAuthProvider();
    const createUser = (email, password) => {
       setLoading(true);
       return createUserWithEmailAndPassword(auth, email, password);
@@ -51,23 +53,32 @@ const AuthProvider = ({ children }) => {
    };
 
    useEffect(() => {
-      const unSubscribe = onAuthStateChanged(auth, (user) => {
+      const unSubscribe = onAuthStateChanged(auth, async (user) => {
          if (user) {
+            // create a post req for get token
+            const { data } = await axiosPublic.post('/jwt', {
+               email: user?.email,
+            });
+            // console.log(data);
+            localStorage.setItem('token', data.token);
+
             setUser(user);
             setLoading(false);
             console.log('CurrentUser', user);
          } else {
+            localStorage.removeItem('token');
             setLoading(false);
             setUser(null);
             console.log('User Logout');
          }
       });
       return () => unSubscribe();
-   }, []);
+   }, [axiosPublic]);
 
    const authData = {
       user,
       loading,
+      setLoading,
       createUser,
       updateUserProfile,
       signIn,

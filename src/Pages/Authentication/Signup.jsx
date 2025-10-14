@@ -9,6 +9,7 @@ import {
    FieldSeparator,
 } from '@/components/ui/field';
 import { Eye, EyeOff } from 'lucide-react';
+import { LiaSpinnerSolid } from 'react-icons/lia';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import {
@@ -25,15 +26,20 @@ import { useForm } from 'react-hook-form';
 import useAuth from '@/hooks/Custom/useAuth';
 import { uploadImage } from '@/API/utils';
 import GoogleSignInButton from './GoogleSignInButton';
+import useAxiosPublic from '@/hooks/Custom/useAxiosPublic';
+import useLoading from '@/hooks/Custom/useLoading';
 
 const Signup = () => {
    const [showPassword, setShowPassword] = useState(false);
    const { loading, createUser, updateUserProfile } = useAuth();
    const location = useLocation();
    const navigate = useNavigate();
+   const axiosPublic = useAxiosPublic();
+   const { reqLoading, setReqLoading } = useLoading();
    const {
       register,
       handleSubmit,
+      reset,
       setValue,
       formState: { errors },
    } = useForm();
@@ -41,6 +47,7 @@ const Signup = () => {
 
    const handleSignup = async (data) => {
       const { name, email, image, role, password } = data || {};
+      setReqLoading(true);
 
       let imageUrl = 'https://i.ibb.co.com/PZQZ8Lc7/user.png';
       if (image && image?.length > 0) {
@@ -52,9 +59,20 @@ const Signup = () => {
       try {
          await createUser(email, password);
          await updateUserProfile(name, imageUrl);
-         navigate(from, { replace: true });
+         const { data } = await axiosPublic.post('/users', {
+            email,
+            image: imageUrl,
+            role,
+         });
+         console.log(data);
+         if (data?.insertedId) {
+            navigate(from, { replace: true });
+            reset();
+         }
       } catch (err) {
          console.log(err);
+      } finally {
+         setReqLoading(false);
       }
    };
 
@@ -161,8 +179,12 @@ const Signup = () => {
 
                   {/* Submit Button */}
                   <Field className={'mt-2'}>
-                     <Button type="submit" className="w-full cursor-pointer">
-                        Sign Up
+                     <Button disabled={loading || reqLoading} type="submit" className="w-full cursor-pointer">
+                        {loading || reqLoading ? (
+                           <LiaSpinnerSolid className="animate-spin" />
+                        ) : (
+                           'Sign Up'
+                        )}
                      </Button>
                   </Field>
 
