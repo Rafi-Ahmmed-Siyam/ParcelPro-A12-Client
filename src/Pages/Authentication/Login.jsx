@@ -15,6 +15,7 @@ import { useForm } from 'react-hook-form';
 import GoogleSignInButton from './GoogleSignInButton';
 import useAuth from '@/hooks/Custom/useAuth';
 import { LiaSpinnerSolid } from 'react-icons/lia';
+import { successToast } from '@/Utilities/Toasts';
 
 const Login = () => {
    const [showPassword, setShowPassword] = useState(false);
@@ -33,6 +34,7 @@ const Login = () => {
       const { email, password } = data || {};
       try {
          await signIn(email, password);
+         successToast('Login Successful!');
          navigate(from, { replace: true });
       } catch (err) {
          console.log(err);
@@ -59,6 +61,7 @@ const Login = () => {
                         <Field>
                            <FieldLabel htmlFor="email">Email</FieldLabel>
                            <Input
+                              className={'py-5 rounded-sm'}
                               id="email"
                               type="email"
                               placeholder="m@example.com"
@@ -78,7 +81,7 @@ const Login = () => {
                               // required
                               id="password"
                               type={showPassword ? 'text' : 'password'}
-                              className="pr-10" // icon space
+                              className="pr-10 py-5 rounded-sm" // icon space
                               {...register('password', {
                                  required: 'Password is required.',
                               })}
@@ -110,7 +113,7 @@ const Login = () => {
                            <Button
                               disabled={loading}
                               type="submit"
-                              className="w-full cursor-pointer"
+                              className="w-full cursor-pointer py-5 rounded-sm"
                            >
                               {loading ? (
                                  <LiaSpinnerSolid className="animate-spin" />

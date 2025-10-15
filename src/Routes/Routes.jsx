@@ -6,6 +6,8 @@ import HomePage from '@/Pages/HomePage';
 import Order from '@/Pages/Order';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import PrivetRoute from './PrivetRoute';
+import BookParcel from '@/Pages/Dashboard/User/BookParcel';
+import MyParcel from '@/Pages/Dashboard/User/MyParcel';
 
 const router = createBrowserRouter([
    {
@@ -41,6 +43,16 @@ const router = createBrowserRouter([
             <DashboardLayout />
          </PrivetRoute>
       ),
+      children: [
+         {
+            path: 'bookParcel',
+            element: <BookParcel />,
+         },
+         {
+            path: 'myParcel',
+            element: <MyParcel />,
+         },
+      ],
    },
 ]);
 

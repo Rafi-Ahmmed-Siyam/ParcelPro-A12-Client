@@ -13,6 +13,7 @@ import navIcon from '../../../assets/icons/express-delivery.png';
 
 import { Button } from '../../ui/button';
 import useAuth from '@/hooks/Custom/useAuth';
+import { MdOutlineSpaceDashboard } from 'react-icons/md';
 
 const NavbarHome = () => {
    const { user, logOut } = useAuth();
@@ -51,6 +52,7 @@ const NavbarHome = () => {
                            >
                               <div className="w-10 rounded-full">
                                  <img
+                                    referrerPolicy="no-referrer"
                                     alt="user image"
                                     src={
                                        user?.photoURL ||
@@ -76,10 +78,7 @@ const NavbarHome = () => {
                                     'flex justify-start items-center gap-1.5'
                                  }
                               >
-                                 <LayoutDashboard
-                                    strokeWidth={2.25}
-                                    className="size-4"
-                                 />{' '}
+                                 <MdOutlineSpaceDashboard className="size-5 text-black" />
                                  Dashboard
                               </NavLink>
                            </DropdownMenuItem>

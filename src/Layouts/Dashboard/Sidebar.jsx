@@ -2,12 +2,33 @@ import React from 'react';
 import navIcon from '../../assets/Icons/express-delivery.png';
 import { Link, NavLink } from 'react-router-dom';
 import { CgProfile } from 'react-icons/cg';
-import { LogOut } from 'lucide-react';
+import { LogOut, NotebookPen, NotebookText, Package } from 'lucide-react';
 import useAuth from '@/hooks/Custom/useAuth';
 import { Button } from '@/components/ui/button';
 
 const Sidebar = () => {
    const { user, logOut } = useAuth();
+
+   const userLinks = (
+      <>
+         <li>
+            <NavLink
+               to={'/dashboard/myParcel'}
+               className="hover:bg-blue-100 rounded-lg  px-2.5 py-1.5 flex justify-start items-center gap-0.5"
+            >
+               <Package /> <span>My Parcel</span>
+            </NavLink>
+         </li>
+         <li>
+            <NavLink
+               to={'/dashboard/bookParcel'}
+               className="hover:bg-blue-100 rounded-lg  px-2.5 py-1.5 flex justify-start items-center gap-0.5"
+            >
+               <NotebookPen /> <span>Book a Parcel</span>
+            </NavLink>
+         </li>
+      </>
+   );
    return (
       <aside className="drawer-side">
          <label
@@ -26,28 +47,8 @@ const Sidebar = () => {
             </Link>
 
             {/* ---------- Middle Navigation Links ---------- */}
-            <ul className="mt-6 space-y-1 flex-1">
-               <li>
-                  <a className="hover:bg-blue-100 rounded-lg block px-2.5 py-1.5">
-                     Home
-                  </a>
-               </li>
-               <li>
-                  <a className="hover:bg-blue-100 rounded-lg block px-2.5 py-1.5">
-                     My Parcels
-                  </a>
-               </li>
-               <li>
-                  <a className="hover:bg-blue-100 rounded-lg block px-2.5 py-1.5">
-                     Add Parcel
-                  </a>
-               </li>
-               <li>
-                  <a className="hover:bg-blue-100 rounded-lg block px-2.5 py-1.5">
-                     Settings
-                  </a>
-               </li>
-            </ul>
+            {/* User Dashboard Links */}
+            <ul className="mt-7 space-y-1.5 flex-1">{userLinks}</ul>
 
             {/* ---------- Bottom Section ---------- */}
             <div className="border-t pt-4 space-y-1">

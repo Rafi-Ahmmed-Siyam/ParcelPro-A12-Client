@@ -28,6 +28,7 @@ import { uploadImage } from '@/API/utils';
 import GoogleSignInButton from './GoogleSignInButton';
 import useAxiosPublic from '@/hooks/Custom/useAxiosPublic';
 import useLoading from '@/hooks/Custom/useLoading';
+import { successToast } from '@/Utilities/Toasts';
 
 const Signup = () => {
    const [showPassword, setShowPassword] = useState(false);
@@ -67,6 +68,7 @@ const Signup = () => {
          console.log(data);
          if (data?.insertedId) {
             navigate(from, { replace: true });
+            successToast('Sign Up Successful!');
             reset();
          }
       } catch (err) {
@@ -96,6 +98,7 @@ const Signup = () => {
                   <Field className="mb-4">
                      <FieldLabel htmlFor="name">Name</FieldLabel>
                      <Input
+                        className={'py-5 rounded-sm'}
                         id="name"
                         type="text"
                         placeholder="Your Name"
@@ -107,6 +110,7 @@ const Signup = () => {
                   <Field className="mb-4">
                      <FieldLabel htmlFor="email">Email</FieldLabel>
                      <Input
+                        className={'py-5 rounded-sm'}
                         id="email"
                         type="email"
                         placeholder="m@example.com"
@@ -124,7 +128,7 @@ const Signup = () => {
                         <Input
                            id="picture"
                            type="file"
-                           className="w-full border p-2 cursor-pointer"
+                           className="w-full border  cursor-pointer h-[40.5px] rounded-sm"
                            {...register('image')}
                         />
                      </Field>
@@ -135,7 +139,7 @@ const Signup = () => {
                         <Select
                            onValueChange={(value) => setValue('role', value)}
                         >
-                           <SelectTrigger className="w-full">
+                           <SelectTrigger className="w-full py-5 rounded-sm">
                               <SelectValue placeholder="Select a role" />
                            </SelectTrigger>
                            <SelectContent>
@@ -157,7 +161,7 @@ const Signup = () => {
                      <Input
                         id="password"
                         type={showPassword ? 'text' : 'password'}
-                        className="pr-12"
+                        className="pr-12 py-5 rounded-sm"
                         placeholder="Create a Password"
                         {...register('password', {
                            required: 'Password is required!',
@@ -166,7 +170,7 @@ const Signup = () => {
 
                      <button
                         type="button"
-                        className="absolute left-[260px] md:left-[480px] lg:left-[480px]  top-10"
+                        className="absolute left-[260px] md:left-[480px] lg:left-[480px]  top-10 "
                         onClick={() => setShowPassword(!showPassword)}
                      >
                         {showPassword ? (
@@ -179,7 +183,11 @@ const Signup = () => {
 
                   {/* Submit Button */}
                   <Field className={'mt-2'}>
-                     <Button disabled={loading || reqLoading} type="submit" className="w-full cursor-pointer">
+                     <Button
+                        disabled={loading || reqLoading}
+                        type="submit"
+                        className="w-full cursor-pointer py-5 rounded-sm"
+                     >
                         {loading || reqLoading ? (
                            <LiaSpinnerSolid className="animate-spin" />
                         ) : (

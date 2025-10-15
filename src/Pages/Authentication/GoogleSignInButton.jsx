@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Field, FieldSeparator } from '@/components/ui/field';
 import useAuth from '@/hooks/Custom/useAuth';
 import useAxiosPublic from '@/hooks/Custom/useAxiosPublic';
+import { successToast } from '@/Utilities/Toasts';
 
 import React from 'react';
 import { FcGoogle } from 'react-icons/fc';
@@ -21,6 +22,7 @@ const GoogleSignInButton = ({ from }) => {
             role: 'User',
          });
          console.log(data);
+         successToast('Login Successful');
          navigate(from, { replace: true });
       } catch (err) {
          console.log(err);
@@ -38,7 +40,7 @@ const GoogleSignInButton = ({ from }) => {
                onClick={handleGoogleLogin}
                variant="outline"
                type="button"
-               className="w-full flex items-center justify-center gap-2 cursor-pointer"
+               className="w-full flex items-center justify-center gap-2 cursor-pointer py-5 rounded-sm"
             >
                <FcGoogle className="size-6" />
                Continue with Google
