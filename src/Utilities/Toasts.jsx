@@ -10,8 +10,7 @@ export const successToast = (message) => {
       {
          className:
             'bg-green-600 text-white  border-none rounded-sm shadow-md px-3 py-2',
-         duration: 2000,
-         position: 'top-center',
+
          unstyled: true,
       }
    );
@@ -26,8 +25,7 @@ export const errorToast = (message) => {
       {
          className:
             'bg-red-500 text-white  border-none rounded-sm shadow-md px-3 py-2',
-         duration: 2000,
-         position: 'top-center',
+
          unstyled: true,
       }
    );

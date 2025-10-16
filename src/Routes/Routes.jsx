@@ -8,6 +8,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import PrivetRoute from './PrivetRoute';
 import BookParcel from '@/Pages/Dashboard/User/BookParcel';
 import MyParcel from '@/Pages/Dashboard/User/MyParcel';
+import MyProfile from '@/Pages/Dashboard/MyProfile';
 
 const router = createBrowserRouter([
    {
@@ -46,11 +47,23 @@ const router = createBrowserRouter([
       children: [
          {
             path: 'bookParcel',
-            element: <BookParcel />,
+            element: (
+               <PrivetRoute>
+                  <BookParcel />
+               </PrivetRoute>
+            ),
          },
          {
             path: 'myParcel',
             element: <MyParcel />,
+         },
+         {
+            path: 'profile',
+            element: (
+               <PrivetRoute>
+                  <MyProfile />
+               </PrivetRoute>
+            ),
          },
       ],
    },

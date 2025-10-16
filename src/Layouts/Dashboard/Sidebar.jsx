@@ -52,7 +52,10 @@ const Sidebar = () => {
 
             {/* ---------- Bottom Section ---------- */}
             <div className="border-t pt-4 space-y-1">
-               <NavLink className="hover:bg-blue-100 rounded-lg  px-2.5 py-1.5 flex justify-start items-center gap-1">
+               <NavLink
+                  to={'/dashboard/profile'}
+                  className="hover:bg-blue-100 rounded-lg  px-2.5 py-1.5 flex justify-start items-center gap-1"
+               >
                   <CgProfile className="size-5" /> <span>My Profile</span>
                </NavLink>
                {/* ---------- */}

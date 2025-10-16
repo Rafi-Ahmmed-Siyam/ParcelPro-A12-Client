@@ -9,8 +9,9 @@ import { TbCurrencyTaka } from 'react-icons/tb';
 import useAxiosSecure from '@/hooks/Custom/useAxiosSecure';
 import useLoading from '@/hooks/Custom/useLoading';
 import { LiaSpinnerSolid } from 'react-icons/lia';
-import { successToast } from '@/Utilities/Toasts';
+import { errorToast, successToast } from '@/Utilities/Toasts';
 import { useNavigate } from 'react-router-dom';
+import { addHours, isBefore, isFuture } from 'date-fns';
 
 const BookParcel = () => {
    const { user } = useAuth();
@@ -19,6 +20,7 @@ const BookParcel = () => {
    const { reqLoading, setReqLoading } = useLoading();
    const [weight, setWeight] = useState(0);
    const [price, setPrice] = useState(0);
+
    const {
       register,
       handleSubmit,
@@ -37,6 +39,7 @@ const BookParcel = () => {
 
       return setPrice(parcelWeight * 50);
    };
+
    // console.log('parcel-w', weight);
    // console.log('parcel Price', price);
 
@@ -67,7 +70,7 @@ const BookParcel = () => {
          deliveryLatitude: latitude,
          deliveryLongitude: longitude,
          createdAt: new Date(),
-         status: 'Pending',
+         bookingStatus: 'pending',
       };
 
       try {
@@ -198,10 +201,26 @@ const BookParcel = () => {
                   <div className="flex-1 flex flex-col gap-2.5">
                      <Label>Requested Delivery Date</Label>
                      <Input
-                        {...register('deliveryDate', { required: true })}
+                        {...register('deliveryDate', {
+                           required: true,
+                           validate: (value) => {
+                              const selectedDate = new Date(value);
+                              const minDate = addHours(new Date(), 24);
+
+                              return (
+                                 !isBefore(selectedDate, minDate) ||
+                                 'Date & time must be at least 24 hours after now'
+                              );
+                           },
+                        })}
                         type="date"
                         className="py-5 rounded-sm"
                      />
+                     {errors.deliveryDate && (
+                        <p className="text-red-500 text-sm">
+                           {errors.deliveryDate.message}
+                        </p>
+                     )}
                   </div>
                </div>
 
