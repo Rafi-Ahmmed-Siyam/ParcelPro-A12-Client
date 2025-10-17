@@ -1,23 +1,30 @@
 import { Button } from '@/components/ui/button';
-import {
-   Table,
-   TableBody,
-   TableCaption,
-   TableCell,
-   TableHead,
-   TableHeader,
-   TableRow,
-} from '@/components/ui/table';
+import { TableCell, TableRow } from '@/components/ui/table';
 import { formateDate } from '@/Utilities/dateFormater';
-import { format } from 'date-fns';
-
-import { SquarePen, Trash } from 'lucide-react';
-import React from 'react';
+import React, { useState } from 'react';
 import { TbCurrencyTaka } from 'react-icons/tb';
+import ConfirmModal from '../../Modals/ConfirmModal';
+import useAxiosSecure from '@/hooks/Custom/useAxiosSecure';
+import { successToast } from '@/Utilities/Toasts';
+import { Link } from 'react-router-dom';
 
-const MyParcelRow = ({ parcel }) => {
-   const { bookingStatus, price, parcelType, deliveryDate, createdAt } =
+const MyParcelRow = ({ parcel, refetch }) => {
+   const { _id, bookingStatus, price, parcelType, deliveryDate, createdAt } =
       parcel || {};
+   const axiosSecure = useAxiosSecure();
+   const [open, setOpen] = useState(false);
+   const handleDeleteParcel = async () => {
+      try {
+         const { data } = await axiosSecure.delete(`/parcels/${_id}`);
+         console.log(data);
+         if (data.deletedCount > 0) {
+            refetch();
+            successToast('Parcel Deleted Successful!');
+         }
+      } catch (err) {
+         console.log(err);
+      }
+   };
 
    return (
       <TableRow>
@@ -39,14 +46,25 @@ const MyParcelRow = ({ parcel }) => {
          {/* status */}
          <TableCell>{bookingStatus}</TableCell>
          <TableCell>
-            <Button size="sm" variant="default">
-               Update
-            </Button>
+            <Link to={`/dashboard/updateParcel/${_id}`}>
+               <Button size="sm" variant="default">
+                  Update
+               </Button>
+            </Link>
          </TableCell>
          <TableCell>
-            <Button size="sm" variant="destructive">
+            <Button
+               onClick={() => setOpen(true)}
+               size="sm"
+               variant="destructive"
+            >
                Delete
             </Button>
+            <ConfirmModal
+               openModal={open}
+               setOpenModal={setOpen}
+               deleteConfirm={handleDeleteParcel}
+            />
          </TableCell>
       </TableRow>
    );

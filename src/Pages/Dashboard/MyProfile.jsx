@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import {
    Card,
    CardContent,
@@ -7,7 +8,7 @@ import {
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Separator } from '@/components/ui/separator'; // For visual separation
+import { Separator } from '@/components/ui/separator';
 import useAuth from '@/hooks/Custom/useAuth';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -23,31 +24,44 @@ import {
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { formateDate } from '@/Utilities/dateFormater';
-
-// Assuming these are the props you'd receive from Firebase/state
-// const user = {
-//    name: 'Jane Doe',
-//    email: 'jane.doe@example.com',
-//    uid: 'f1r3b4s3u1d-123456789',
-//    phoneNumber: '+880 1712 345678', // Example: Adding a common profile field
-//    lastLogin: '2023-10-27 10:30 AM', // Example: Adding another profile field
-//    accountCreated: '2022-03-15',
-//    imageUrl:
-//       'https://images.unsplash.com/photo-1534528741775-53994a69daeb?fit=crop&w=300&q=80', // Placeholder
-//    initials: 'JD',
-// };
+import { uploadImage } from '@/API/utils';
 
 const MyProfile = () => {
-   const { user } = useAuth();
+   const { user, updateUserProfile, setLoading } = useAuth();
+   const [isModalOpen, setIsModalOpen] = useState(false);
+   const isGoogleUser = user?.providerData[0]?.providerId === 'google.com';
+   const [previewImage, setPreviewImage] = useState(null);
+   const [selectedFile, setSelectedFile] = useState(null);
+
+   const handleImageChange = async (e) => {
+      const file = e.target.files[0];
+      if (file) {
+         setSelectedFile(e.target.files);
+         const fileURL = URL.createObjectURL(file);
+         setPreviewImage(fileURL);
+      }
+   };
+
+   const avatarSrc = previewImage || user.photoURL;
+
+   const handleUpdatePicture = async () => {
+      if (!selectedFile) {
+         alert('Please select a new picture first.');
+         return;
+      }
+
+      console.log(user.displayName);
+      const imgUrl = await uploadImage(selectedFile);
+      console.log(imgUrl);
+      await updateUserProfile(user.displayName, imgUrl);
+      setIsModalOpen(false);
+      setInterval(setLoading(false), 500);
+   };
 
    return (
-      <Dialog>
+      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
          <div className="p-6 md:p-10 w-full">
-            {/* ======================================= */}
-            {/* === 1. Profile Display Content === */}
-            {/* ======================================= */}
             <Card className="shadow-none border-none max-w-6xl mx-auto">
-               {/* Header Section */}
                <CardHeader className="border-b px-0 py-4">
                   <CardTitle className="text-3xl font-bold tracking-tight">
                      My Profile
@@ -58,21 +72,16 @@ const MyProfile = () => {
                </CardHeader>
 
                <CardContent className="pt-8 grid md:grid-cols-3 gap-8 px-0 pb-6">
-                  {/* Left Column: Avatar and Info */}
                   <div className="md:col-span-1 flex flex-col items-center p-4">
                      <div className="relative group mb-4">
-                        {/* Avatar */}
                         <Avatar className="w-40 h-40 border-4 border-gray-100 ring-1 ring-gray-300">
                            <AvatarImage
                               src={user.photoURL}
                               alt={user.displayName}
+                              referrerPolicy="no-referrer"
                            />
-                           <AvatarFallback className="text-4xl font-bold bg-gray-200 text-gray-700">
-                              {user.initials}
-                           </AvatarFallback>
                         </Avatar>
 
-                        {/* Role Badge */}
                         <Badge
                            className="absolute bottom-0 right-0 transform translate-x-1/4 translate-y-1/4 
                                                text-xs font-semibold px-3 py-1 bg-primary text-primary-foreground 
@@ -83,19 +92,52 @@ const MyProfile = () => {
                         </Badge>
                      </div>
 
-                     {/* Displayed Name */}
-                     <h4 className="text-xl font-bold mt-2">
-                        {user.displayName}
-                     </h4>
-                     <p className="text-sm text-gray-500">{user.email}</p>
+                     {!isGoogleUser && (
+                        <>
+                           <Button
+                              onClick={() => setIsModalOpen(true)}
+                              size="sm"
+                              variant="outline"
+                              className="font-semibold"
+                           >
+                              Upload Profile Picture
+                           </Button>
+
+                           <p className="text-xs text-gray-500 mt-1">
+                              JPG or PNG, max 5MB
+                           </p>
+                        </>
+                     )}
+
+                     {isGoogleUser && (
+                        <p className="text-sm text-gray-500 mt-2 text-center max-w-[160px]">
+                           Profile picture managed by Google.
+                        </p>
+                     )}
                   </div>
 
-                  {/* Right Column: User Details */}
                   <div className="md:col-span-2 p-4 pt-0 space-y-6 md:border-l md:pl-8">
-                     {/* User ID (UID) - Keeping relevant data visible */}
+                     {/* Full Name Field */}
                      <div>
                         <p className="text-sm font-medium text-gray-500">
-                           User ID (Firebase)
+                           Full Name
+                        </p>
+                        <h4 className="text-xl font-bold text-gray-800">
+                           {user.displayName}
+                        </h4>
+                     </div>
+
+                     <div>
+                        <p className="text-sm font-medium text-gray-500">
+                           Email Address
+                        </p>
+                        <p className="text-md text-gray-700">{user.email}</p>
+                     </div>
+
+                     {/* User ID (UID) */}
+                     <div>
+                        <p className="text-sm font-medium text-gray-500">
+                           User ID
                         </p>
                         <div className="flex items-center gap-2">
                            <p className="text-sm font-mono text-gray-700 bg-gray-100 p-2 rounded">
@@ -106,9 +148,8 @@ const MyProfile = () => {
 
                      <Separator />
 
-                     {/* Account Metadata Grid */}
+                     {/* Account data Grid */}
                      <div className="grid grid-cols-2 gap-4 pt-2">
-                        {/* Phone Number */}
                         <div>
                            <p className="text-sm font-medium text-gray-500">
                               Phone Number
@@ -117,8 +158,6 @@ const MyProfile = () => {
                               {user.phoneNumber || 'N/A'}
                            </p>
                         </div>
-
-                        {/* Last Login */}
                         <div>
                            <p className="text-sm font-medium text-gray-500">
                               Last Login
@@ -128,8 +167,6 @@ const MyProfile = () => {
                                  'N/A'}
                            </p>
                         </div>
-
-                        {/* Account Created */}
                         <div>
                            <p className="text-sm font-medium text-gray-500">
                               Account Created
@@ -139,81 +176,51 @@ const MyProfile = () => {
                            </p>
                         </div>
                      </div>
-
-                     {user.providerData[0].providerId !== 'google.com' && (
-                        <div className="pt-8 flex justify-end">
-                           <DialogTrigger asChild>
-                              <Button size="lg" className="px-8 font-semibold">
-                                 Update Profile
-                              </Button>
-                           </DialogTrigger>
-                        </div>
-                     )}
                   </div>
                </CardContent>
             </Card>
          </div>
 
-         {/* ======================================= */}
-         {/* === 2. Unified Update Profile Dialog === */}
-         {/* ======================================= */}
          <DialogContent className="sm:max-w-[500px]">
             <DialogHeader>
                <DialogTitle className="text-2xl font-bold">
-                  Edit Profile Details
+                  Update Profile Picture
                </DialogTitle>
                <DialogDescription>
-                  Update your name and profile photo. Click save when you're
-                  done.
+                  Select a new profile image. JPG or PNG, max 5MB.
                </DialogDescription>
             </DialogHeader>
 
             <div className="grid gap-6 py-4">
-               {/* 1. Name Update Field */}
                <div className="grid gap-2">
-                  <Label htmlFor="displayName" className="text-sm font-medium">
-                     Full Name
+                  <Label className="text-sm font-medium">
+                     Select New Picture
                   </Label>
-                  <Input
-                     id="displayName"
-                     defaultValue={user.displayName || ''}
-                     placeholder="Enter your full name"
-                  />
-               </div>
-
-               <Separator />
-
-               {/* 2. Profile Picture Upload */}
-               <div className="grid gap-2">
-                  <Label className="text-sm font-medium">Profile Picture</Label>
                   <div className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 p-6 rounded-lg hover:border-primary transition-colors">
-                     {/* Current Avatar/Preview */}
-                     <Avatar className="w-16 h-16 mb-3">
-                        <AvatarImage
-                           src={user.photoURL}
-                           alt={user.displayName}
-                        />
-                        <AvatarFallback className="bg-gray-200">
-                           {user.initials}
-                        </AvatarFallback>
+                     <Avatar className="w-20 h-20 mb-3">
+                        <AvatarImage src={avatarSrc} alt={user.displayName} />
                      </Avatar>
 
                      <Label
                         htmlFor="picture-upload"
                         className="cursor-pointer text-primary font-semibold hover:underline"
                      >
-                        Click to change photo
+                        {selectedFile
+                           ? selectedFile.name
+                           : 'Click to choose file'}
                      </Label>
                      <p className="text-xs text-gray-500 mt-1">
-                        JPG or PNG, max 5MB
+                        {selectedFile
+                           ? "File selected. Click 'Update Picture' to save."
+                           : 'JPG or PNG, max 5MB.'}
                      </p>
 
-                     {/* Hidden Input for file selection */}
                      <Input
                         id="picture-upload"
                         type="file"
                         className="hidden"
                         accept="image/jpeg, image/png"
+                        onChange={handleImageChange}
                      />
                   </div>
                </div>
@@ -221,10 +228,24 @@ const MyProfile = () => {
 
             <DialogFooter>
                <DialogClose asChild>
-                  <Button variant="outline">Cancel</Button>
+                  <Button
+                     variant="outline"
+                     onClick={() => {
+                        setPreviewImage(null);
+                        setSelectedFile(null);
+                     }}
+                  >
+                     Cancel
+                  </Button>
                </DialogClose>
-               <Button type="submit" className="font-semibold">
-                  Save Changes
+
+               <Button
+                  type="button"
+                  className="font-semibold"
+                  onClick={handleUpdatePicture}
+                  disabled={!selectedFile}
+               >
+                  Update Picture
                </Button>
             </DialogFooter>
          </DialogContent>

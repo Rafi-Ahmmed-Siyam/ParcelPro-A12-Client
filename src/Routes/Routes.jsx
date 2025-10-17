@@ -9,6 +9,7 @@ import PrivetRoute from './PrivetRoute';
 import BookParcel from '@/Pages/Dashboard/User/BookParcel';
 import MyParcel from '@/Pages/Dashboard/User/MyParcel';
 import MyProfile from '@/Pages/Dashboard/MyProfile';
+import UpdateParcel from '@/Pages/Dashboard/User/UpdateParcel';
 
 const router = createBrowserRouter([
    {
@@ -64,6 +65,10 @@ const router = createBrowserRouter([
                   <MyProfile />
                </PrivetRoute>
             ),
+         },
+         {
+            path: 'updateParcel/:id',
+            element: <UpdateParcel />,
          },
       ],
    },

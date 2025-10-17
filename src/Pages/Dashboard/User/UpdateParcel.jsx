@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -6,45 +6,101 @@ import { Textarea } from '@/components/ui/textarea';
 import useAuth from '@/hooks/Custom/useAuth';
 import { useForm } from 'react-hook-form';
 import { TbCurrencyTaka } from 'react-icons/tb';
+import { addHours, isBefore } from 'date-fns';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import useAxiosSecure from '@/hooks/Custom/useAxiosSecure';
-import useLoading from '@/hooks/Custom/useLoading';
-import { LiaSpinnerSolid } from 'react-icons/lia';
-import { errorToast, successToast } from '@/Utilities/Toasts';
-import { useNavigate } from 'react-router-dom';
-import { addHours, isBefore, isFuture } from 'date-fns';
+import useUserParcels from '@/hooks/Custom/useUserParcels';
+import { successToast } from '@/Utilities/Toasts';
 
-const BookParcel = () => {
-   const { user } = useAuth();
+const UpdateParcel = () => {
    const axiosSecure = useAxiosSecure();
    const navigate = useNavigate();
-   const { reqLoading, setReqLoading } = useLoading();
-   const [weight, setWeight] = useState(0);
-   const [price, setPrice] = useState(0);
+   const [, refetch] = useUserParcels();
+   const { user } = useAuth();
+   const { id } = useParams();
+   const [updateWeight, setUpdateWeight] = useState(0);
+   const [updatePrice, setUpdatePrice] = useState(0);
+
+   const { data: parcel = [] } = useQuery({
+      queryKey: ['parcel', id],
+      queryFn: async () => {
+         const { data } = await axiosSecure.get(`/parcels/${id}`);
+         return data;
+      },
+   });
+   // console.log(parcel);
+   const {
+      _id,
+      weight,
+      senderPhone,
+      senderName,
+      senderEmail,
+      receiverPhone,
+      receiverName,
+      price,
+      parcelType,
+      deliveryLongitude,
+      deliveryLatitude,
+      deliveryDate,
+      deliveryAddress,
+      createdAt,
+      bookingStatus,
+   } = parcel || {};
 
    const {
       register,
       handleSubmit,
+      watch,
       reset,
       formState: { errors },
    } = useForm();
 
-   const handlePrice = (parcelWeight) => {
-      setWeight(parcelWeight);
+   // This is for show default value
+   useEffect(() => {
+      if (price) setUpdatePrice(price);
+      if (weight) setUpdateWeight(weight);
 
-      if (!parcelWeight || parcelWeight < 0) return setPrice(0);
+      if (parcel) {
+         reset({
+            type: parcelType,
+            phone: senderPhone,
+            receiverName: receiverName,
+            receiverPhone: receiverPhone,
+            deliveryDate: deliveryDate,
+            address: deliveryAddress,
+            longitude: deliveryLongitude,
+            latitude: deliveryLatitude,
+         });
+      }
+   }, [
+      price,
+      weight,
+      reset,
+      parcel,
+      parcelType,
+      senderPhone,
+      senderName,
+      receiverPhone,
+      deliveryDate,
+      deliveryAddress,
+      deliveryLatitude,
+      deliveryLongitude,
+      receiverName,
+   ]);
 
-      if (parcelWeight > 2) {
-         return setPrice(150);
+   // Thi is for update price
+   useEffect(() => {
+      if (!updateWeight || updateWeight < 0) return setUpdatePrice(0);
+
+      if (updateWeight > 2) {
+         return setUpdatePrice(150);
       }
 
-      return setPrice(parcelWeight * 50);
-   };
+      return setUpdatePrice(updateWeight * 50);
+   }, [updateWeight]);
 
-   // console.log('parcel-w', weight);
-   // console.log('parcel Price', price);
-
-   const handleParcelBook = async (data) => {
-      setReqLoading(true);
+   const hanDleUpdateSubmit = async (data) => {
       const {
          address,
          latitude,
@@ -56,7 +112,7 @@ const BookParcel = () => {
          deliveryDate,
       } = data || {};
 
-      const parcelData = {
+      const updateParcelData = {
          senderName: user?.displayName || 'Unnamed User',
          senderEmail: user?.email,
          senderPhone: phone,
@@ -69,24 +125,24 @@ const BookParcel = () => {
          deliveryAddress: address,
          deliveryLatitude: latitude,
          deliveryLongitude: longitude,
-         createdAt: new Date(),
-         bookingStatus: 'pending',
+         createdAt: createdAt,
+         bookingStatus: bookingStatus,
       };
 
       try {
-         const { data } = await axiosSecure.post('/parcels', parcelData);
-         console.log(data);
-         if (data?.insertedId) {
-            setReqLoading(false);
-            reset();
-            setWeight(0);
-            setPrice(0);
-            successToast('Your Parcel Booked Successfully');
+         const { data } = await axiosSecure.put(
+            `/parcels/${id}`,
+            updateParcelData
+         );
+         if (data.modifiedCount > 0) {
+            refetch();
             navigate('/dashboard/myParcel');
+            successToast('Your parcel Successfully updated');
          }
+         // myParcel
+         console.log(data);
       } catch (err) {
          console.log(err);
-         setReqLoading(false);
       }
    };
 
@@ -95,17 +151,17 @@ const BookParcel = () => {
          <div className="w-full px-5 md:px-14 lg:px-0 lg:max-w-4xl">
             {/* Form container */}
             <form
-               onSubmit={handleSubmit(handleParcelBook)}
+               onSubmit={handleSubmit(hanDleUpdateSubmit)}
                className="space-y-5"
             >
                {/* === Heading === */}
                <h1 className="text-center text-3xl font-bold text-slate-800 mb-7">
-                  Book a New Parcel
+                  Update Parcel
                </h1>
                <p className="text-sm text-muted-foreground mt-1 text-center max-w-2xl mx-auto">
-                  Fill out the parcel details carefully to schedule your
-                  delivery. Make sure all information, including address and
-                  contact details, is accurate to ensure smooth delivery.
+                  Modify your existing parcel details if any information has
+                  changed. Please ensure the updated details are correct before
+                  saving the changes.
                </p>
 
                {/* === First row === */}
@@ -138,7 +194,7 @@ const BookParcel = () => {
                         type="text"
                         placeholder="e.g. Documents, Electronics"
                         className="py-5 rounded-sm"
-                        {...register('type', { required: true })}
+                        {...register('type')}
                      />
                   </div>
                   <div className="flex-1 flex flex-col gap-2.5">
@@ -147,7 +203,7 @@ const BookParcel = () => {
                         type="tel"
                         placeholder="Enter your phone number"
                         className="py-5 rounded-sm"
-                        {...register('phone', { required: true })}
+                        {...register('phone')}
                      />
                   </div>
                </div>
@@ -159,7 +215,7 @@ const BookParcel = () => {
                         type="text"
                         placeholder="Enter receiver’s name"
                         className="py-5 rounded-sm"
-                        {...register('receiverName', { required: true })}
+                        {...register('receiverName')}
                      />
                   </div>
                   <div className="flex-1 flex flex-col gap-2.5">
@@ -168,7 +224,7 @@ const BookParcel = () => {
                         type="tel"
                         placeholder="Enter receiver’s phone number"
                         className="py-5 rounded-sm"
-                        {...register('receiverPhone', { required: true })}
+                        {...register('receiverPhone')}
                      />
                   </div>
                </div>
@@ -180,9 +236,8 @@ const BookParcel = () => {
                         <div className="flex flex-1 flex-col gap-2.5 ">
                            <Label>Parcel Weight (kg)</Label>
                            <Input
-                              onChange={(e) =>
-                                 handlePrice(parseFloat(e.target.value))
-                              }
+                              value={updateWeight}
+                              onChange={(e) => setUpdateWeight(e.target.value)}
                               required
                               type="number"
                               step="0.1"
@@ -195,7 +250,7 @@ const BookParcel = () => {
                            <Label>Estimated Price</Label>
                            <div className="border rounded-sm h-10 flex justify-center items-center bg-[#F1F5F9]">
                               <span className="flex items-center text-slate-700 font-semibold">
-                                 {price.toFixed(2) || '0'}
+                                 {updatePrice.toFixed(2) || '0'}
                                  <TbCurrencyTaka className="size-5" />{' '}
                               </span>
                            </div>
@@ -206,7 +261,6 @@ const BookParcel = () => {
                      <Label>Requested Delivery Date</Label>
                      <Input
                         {...register('deliveryDate', {
-                           required: true,
                            validate: (value) => {
                               const selectedDate = new Date(value);
                               const minDate = addHours(new Date(), 24);
@@ -237,7 +291,7 @@ const BookParcel = () => {
                         step="any"
                         placeholder="e.g. 21.121365496"
                         className="py-5 rounded-sm"
-                        {...register('latitude', { required: true })}
+                        {...register('latitude')}
                      />
                   </div>
                   <div className="flex-1 flex flex-col gap-2.5">
@@ -247,7 +301,7 @@ const BookParcel = () => {
                         step="any"
                         placeholder="e.g. 91.123456789"
                         className="py-5 rounded-sm"
-                        {...register('longitude', { required: true })}
+                        {...register('longitude')}
                      />
                   </div>
                </div>
@@ -260,21 +314,19 @@ const BookParcel = () => {
                         className={'rounded-sm h-20'}
                         placeholder="Type your parcel address."
                         id="message-2"
-                        {...register('address', { required: true })}
+                        {...register('address')}
                      />
                   </div>
 
                   {/* === Submit Button === */}
                   <div className="flex flex-1 justify-center mt-4 ">
-                     <Button
-                        disabled={reqLoading}
-                        className="w-full md:w-auto lg:w-full py-6 cursor-pointer"
-                     >
-                        {reqLoading ? (
+                     <Button className="w-full md:w-auto lg:w-full py-6 cursor-pointer">
+                        {/* {reqLoading ? (
                            <LiaSpinnerSolid className="animate-spin" />
                         ) : (
-                           'Book Parcel'
-                        )}
+                           'Update Parcel'
+                        )} */}
+                        Update
                      </Button>
                   </div>
                </div>
@@ -284,4 +336,4 @@ const BookParcel = () => {
    );
 };
 
-export default BookParcel;
+export default UpdateParcel;

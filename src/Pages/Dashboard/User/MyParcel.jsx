@@ -1,4 +1,7 @@
+import ConfirmModal from '@/components/Custom/Modals/ConfirmModal';
 import MyParcelRow from '@/components/Custom/Shared/Tables/MyParcelRow';
+import LoadingSpinner from '@/components/LoadingSpinner';
+import { Button } from '@/components/ui/button';
 import {
    Select,
    SelectContent,
@@ -14,10 +17,15 @@ import {
    TableHeader,
    TableRow,
 } from '@/components/ui/table';
-
+import useAxiosSecure from '@/hooks/Custom/useAxiosSecure';
+import useUserParcels from '@/hooks/Custom/useUserParcels';
 import React, { useState } from 'react';
 
 const MyParcel = () => {
+   const [status, setStatus] = useState('all');
+   const [userParcels, refetch, isLoading, isPending] = useUserParcels(status);
+
+   if (isLoading || isPending) return <LoadingSpinner />;
    return (
       <section className="py-6 px-4 md:px-6 lg:px-14">
          {/* Heading + Filter */}
@@ -31,7 +39,11 @@ const MyParcel = () => {
                <label className="font-medium text-slate-700">
                   Filter by Status:
                </label>
-               <Select>
+               <Select
+                  // disabled={}
+                  value={status}
+                  onValueChange={setStatus}
+               >
                   <SelectTrigger className="w-40 border-slate-300">
                      <SelectValue placeholder="Select status" />
                   </SelectTrigger>
@@ -64,16 +76,24 @@ const MyParcel = () => {
                   </TableRow>
                </TableHeader>
                <TableBody>
-                  <MyParcelRow />
-
-                  <TableRow>
-                     <TableCell
-                        colSpan={9}
-                        className="text-center py-4 text-slate-500"
-                     >
-                        No parcels found.
-                     </TableCell>
-                  </TableRow>
+                  {!userParcels?.length ? (
+                     <TableRow>
+                        <TableCell
+                           colSpan={9}
+                           className="text-center py-4 text-slate-500"
+                        >
+                           No parcels found.
+                        </TableCell>
+                     </TableRow>
+                  ) : (
+                     userParcels.map((parcel) => (
+                        <MyParcelRow
+                           key={parcel._id}
+                           parcel={parcel}
+                           refetch={refetch}
+                        />
+                     ))
+                  )}
                </TableBody>
             </Table>
          </div>
