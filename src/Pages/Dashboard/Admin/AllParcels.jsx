@@ -1,5 +1,5 @@
 import Container from '@/components/Custom/Shared/Container';
-import MyParcelRow from '@/components/Custom/TableRows/MyParcelRow';
+import AllParcelsRow from '@/components/Custom/TableRows/AllParcelsRow';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import {
    Select,
@@ -11,37 +11,31 @@ import {
 import {
    Table,
    TableBody,
-   TableCell,
    TableHead,
    TableHeader,
    TableRow,
 } from '@/components/ui/table';
-import useUserParcels from '@/hooks/Custom/useUserParcels';
-import React, { useState } from 'react';
+import useParcel from '@/hooks/Custom/useParcel';
+import React from 'react';
 
-const MyParcel = () => {
-   const [status, setStatus] = useState('all');
-   const [userParcels, refetch, isLoading, isPending] = useUserParcels(status);
-   console.log(userParcels);
+const AllParcels = () => {
+   const { parcels, reloadParcelData, isPending, isLoading } = useParcel();
+   // console.log(parcels);
+
    if (isLoading || isPending) return <LoadingSpinner />;
    return (
       <Container>
-         {/* Heading + Filter */}
          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
             <h1 className="text-2xl md:text-3xl font-bold text-slate-900">
-               My Parcels
+               All Parcels
             </h1>
 
-            {/*  Filter */}
+            {/* Design-only Filter */}
             <div className="flex items-center gap-2">
                <label className="font-medium text-slate-700">
                   Filter by Status:
                </label>
-               <Select
-                  // disabled={}
-                  value={status}
-                  onValueChange={setStatus}
-               >
+               <Select>
                   <SelectTrigger className="w-40 border-slate-300">
                      <SelectValue placeholder="Select status" />
                   </SelectTrigger>
@@ -62,19 +56,18 @@ const MyParcel = () => {
             <Table className="min-w-full">
                <TableHeader className="bg-slate-100">
                   <TableRow>
-                     <TableHead>Parcel Type</TableHead>
-                     <TableHead>Req. Date</TableHead>
-                     <TableHead>Appx. Date</TableHead>
+                     <TableHead>Sender Name</TableHead>
+                     <TableHead>Sender Phone</TableHead>
                      <TableHead>Booking Date</TableHead>
-                     <TableHead>Price</TableHead>
-                     <TableHead>Delivery Men ID</TableHead>
-                     <TableHead>Booking Status</TableHead>
-                     <TableHead>Update</TableHead>
-                     <TableHead>Cancel</TableHead>
+                     <TableHead>Req. Del. Date</TableHead>
+                     <TableHead>Cost</TableHead>
+                     <TableHead>Status</TableHead>
+                     <TableHead>Manage</TableHead>
                   </TableRow>
                </TableHeader>
                <TableBody>
-                  {!userParcels?.length ? (
+                  {/* Table row */}
+                  {!parcels?.length ? (
                      <TableRow>
                         <TableCell
                            colSpan={9}
@@ -84,14 +77,15 @@ const MyParcel = () => {
                         </TableCell>
                      </TableRow>
                   ) : (
-                     userParcels.map((parcel) => (
-                        <MyParcelRow
+                     parcels.map((parcel) => (
+                        <AllParcelsRow
                            key={parcel._id}
                            parcel={parcel}
-                           refetch={refetch}
+                           refetch={reloadParcelData}
                         />
                      ))
                   )}
+                  {/* <AllParcelsRow /> */}
                </TableBody>
             </Table>
          </div>
@@ -99,4 +93,4 @@ const MyParcel = () => {
    );
 };
 
-export default MyParcel;
+export default AllParcels;

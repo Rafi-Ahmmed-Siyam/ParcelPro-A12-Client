@@ -19,12 +19,12 @@ import {
    DialogFooter,
    DialogHeader,
    DialogTitle,
-   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { formateDate } from '@/Utilities/dateFormater';
 import { uploadImage } from '@/API/utils';
+import useRole from '@/hooks/Custom/useRole';
 
 const MyProfile = () => {
    const { user, updateUserProfile, setLoading } = useAuth();
@@ -32,6 +32,7 @@ const MyProfile = () => {
    const isGoogleUser = user?.providerData[0]?.providerId === 'google.com';
    const [previewImage, setPreviewImage] = useState(null);
    const [selectedFile, setSelectedFile] = useState(null);
+   const { role } = useRole();
 
    const handleImageChange = async (e) => {
       const file = e.target.files[0];
@@ -60,8 +61,8 @@ const MyProfile = () => {
 
    return (
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-         <div className="p-6 md:p-10 w-full">
-            <Card className="shadow-none border-none max-w-6xl mx-auto">
+         <div className="p-6 md:p-10 w-full ">
+            <Card className="shadow-none border-none max-w-6xl mx-auto bg-[#F8F8F8]">
                <CardHeader className="border-b px-0 py-4">
                   <CardTitle className="text-3xl font-bold tracking-tight">
                      My Profile
@@ -71,7 +72,7 @@ const MyProfile = () => {
                   </CardDescription>
                </CardHeader>
 
-               <CardContent className="pt-8 grid md:grid-cols-3 gap-8 px-0 pb-6">
+               <CardContent className="pt-8 grid md:grid-cols-3 gap-8 px-0 pb-6 ">
                   <div className="md:col-span-1 flex flex-col items-center p-4">
                      <div className="relative group mb-4">
                         <Avatar className="w-40 h-40 border-4 border-gray-100 ring-1 ring-gray-300">
@@ -88,7 +89,7 @@ const MyProfile = () => {
                                                border-2 border-white shadow-md z-10"
                            variant="default"
                         >
-                           {user.role || 'User'}
+                           {role.role || 'User'}
                         </Badge>
                      </div>
 
@@ -116,7 +117,7 @@ const MyProfile = () => {
                      )}
                   </div>
 
-                  <div className="md:col-span-2 p-4 pt-0 space-y-6 md:border-l md:pl-8">
+                  <div className="md:col-span-2 p-4 pt-0 space-y-6 md:border-l md:pl-8 ">
                      {/* Full Name Field */}
                      <div>
                         <p className="text-sm font-medium text-gray-500">

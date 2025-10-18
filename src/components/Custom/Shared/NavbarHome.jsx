@@ -8,16 +8,50 @@ import {
    DropdownMenuSeparator,
    DropdownMenuTrigger,
 } from '../../ui/dropdown-menu';
-import { Bell, LayoutDashboard, LogOut } from 'lucide-react';
+import { Bell, LogOut } from 'lucide-react';
 import navIcon from '../../../assets/icons/express-delivery.png';
 
 import { Button } from '../../ui/button';
 import useAuth from '@/hooks/Custom/useAuth';
 import { MdOutlineSpaceDashboard } from 'react-icons/md';
+import useRole from '@/hooks/Custom/useRole';
 
 const NavbarHome = () => {
    const { user, logOut } = useAuth();
+   const { role } = useRole();
    // console.log(user);
+
+   const userLink = (
+      <>
+         <DropdownMenuItem>
+            <NavLink
+               to={'/dashboard/myParcel'}
+               className={
+                  'flex justify-start items-center gap-1.5  font-medium'
+               }
+            >
+               <MdOutlineSpaceDashboard className="size-5 text-black " />
+               Dashboard
+            </NavLink>
+         </DropdownMenuItem>
+      </>
+   );
+
+   const adminLink = (
+      <>
+         <DropdownMenuItem>
+            <NavLink
+               to={'/dashboard/statistics'}
+               className={
+                  'flex justify-start items-center gap-1.5  font-medium'
+               }
+            >
+               <MdOutlineSpaceDashboard className="size-5 text-black " />
+               Dashboard
+            </NavLink>
+         </DropdownMenuItem>
+      </>
+   );
    return (
       <nav className="px-1.5 md:px-3 lg:px-4 py-3  bg-teal-600 shadow-md ">
          <div className="flex justify-between items-center ">
@@ -71,17 +105,9 @@ const NavbarHome = () => {
                               {user?.email}
                            </DropdownMenuLabel>
                            <DropdownMenuSeparator />
-                           <DropdownMenuItem>
-                              <NavLink
-                                 to={'/dashboard'}
-                                 className={
-                                    'flex justify-start items-center gap-1.5'
-                                 }
-                              >
-                                 <MdOutlineSpaceDashboard className="size-5 text-black" />
-                                 Dashboard
-                              </NavLink>
-                           </DropdownMenuItem>
+                           {role.role === 'Admin' && adminLink}
+                           {role.role === 'User' && userLink}
+
                            <Button
                               onClick={() => logOut()}
                               className={'w-full cursor-pointer mt-3'}

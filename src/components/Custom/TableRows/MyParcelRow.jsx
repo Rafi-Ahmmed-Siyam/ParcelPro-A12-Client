@@ -3,7 +3,7 @@ import { TableCell, TableRow } from '@/components/ui/table';
 import { formateDate } from '@/Utilities/dateFormater';
 import React, { useState } from 'react';
 import { TbCurrencyTaka } from 'react-icons/tb';
-import ConfirmModal from '../../Modals/ConfirmModal';
+import ConfirmModal from '../Modals/ConfirmModal';
 import useAxiosSecure from '@/hooks/Custom/useAxiosSecure';
 import { successToast } from '@/Utilities/Toasts';
 import { Link } from 'react-router-dom';
@@ -44,7 +44,7 @@ const MyParcelRow = ({ parcel, refetch }) => {
          {/* delivery man */}
          <TableCell>Not Assigned</TableCell>
          {/* status */}
-         <TableCell>{bookingStatus}</TableCell>
+         <TableCell className={'capitalize'}>{bookingStatus}</TableCell>
          <TableCell>
             <Link to={`/dashboard/updateParcel/${_id}`}>
                <Button size="sm" variant="default">

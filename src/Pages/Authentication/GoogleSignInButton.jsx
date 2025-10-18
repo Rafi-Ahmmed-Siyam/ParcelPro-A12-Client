@@ -17,7 +17,8 @@ const GoogleSignInButton = ({ from }) => {
          const { user } = await googleSignIn();
          console.log(user.email, user.photoURL);
          const { data } = await axiosPublic.post('/users', {
-            email: user.email,
+            name: user?.displayName,
+            email: user?.email,
             image: user?.photoURL,
             role: 'User',
          });

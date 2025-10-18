@@ -9,9 +9,9 @@ const DashboardLayout = () => {
 
          <main className="drawer-content flex flex-col">
             {/* Header / Navbar */}
-            <header className="w-full bg-base-200 shadow-sm px-4 py-2 flex items-center justify-between">
+            <header className="w-full bg-base-200 shadow-sm px-4  flex items-center justify-between">
                {/* Page title */}
-               <h1 className="text-lg font-semibold text-slate-700">
+               <h1 className="text-lg font-semibold text-slate-700 lg:hidden">
                   Dashboard
                </h1>
                {/* Drawer open button for mobile */}
@@ -25,8 +25,8 @@ const DashboardLayout = () => {
             </header>
 
             {/* Main dashboard area */}
-            <section className="flex-1  bg-base-100 ">
-               <article className="min-h-[calc(100vh-44px)] border ">
+            <section className="flex-1  bg-base-100 p-0 lg:p-5 ">
+               <article className="min-h-[calc(100vh-40px)]  border rounded-none lg:rounded-sm bg-[#F8F8F8]">
                   <Outlet />
                </article>
             </section>

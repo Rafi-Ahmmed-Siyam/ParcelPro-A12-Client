@@ -147,7 +147,7 @@ const UpdateParcel = () => {
    };
 
    return (
-      <section className="min-h-[calc(100vh-50px)] flex items-center justify-center  p-6">
+      <section className="min-h-[calc(100vh-45px)] flex items-center justify-center  p-6">
          <div className="w-full px-5 md:px-14 lg:px-0 lg:max-w-4xl">
             {/* Form container */}
             <form

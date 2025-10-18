@@ -61,6 +61,7 @@ const Signup = () => {
          await createUser(email, password);
          await updateUserProfile(name, imageUrl);
          const { data } = await axiosPublic.post('/users', {
+            name,
             email,
             image: imageUrl,
             role,

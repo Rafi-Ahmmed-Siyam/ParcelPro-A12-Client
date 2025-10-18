@@ -10,6 +10,11 @@ import BookParcel from '@/Pages/Dashboard/User/BookParcel';
 import MyParcel from '@/Pages/Dashboard/User/MyParcel';
 import MyProfile from '@/Pages/Dashboard/MyProfile';
 import UpdateParcel from '@/Pages/Dashboard/User/UpdateParcel';
+import Statistics from '@/Pages/Dashboard/Admin/Statistics';
+import AllParcels from '@/Pages/Dashboard/Admin/AllParcels';
+import DeliveryMen from '@/Pages/Dashboard/Admin/DeliveryMen';
+import AllUsers from '@/Pages/Dashboard/Admin/AllUsers';
+import AdminRoute from './AdminRoute';
 
 const router = createBrowserRouter([
    {
@@ -46,6 +51,7 @@ const router = createBrowserRouter([
          </PrivetRoute>
       ),
       children: [
+         // Users Pages
          {
             path: 'bookParcel',
             element: (
@@ -68,7 +74,45 @@ const router = createBrowserRouter([
          },
          {
             path: 'updateParcel/:id',
-            element: <UpdateParcel />,
+            element: (
+               <PrivetRoute>
+                  <UpdateParcel />
+               </PrivetRoute>
+            ),
+         },
+
+         // Admin pages
+         {
+            path: 'statistics',
+            element: (
+               <AdminRoute>
+                  <Statistics />
+               </AdminRoute>
+            ),
+         },
+         {
+            path: 'allParcels',
+            element: (
+               <AdminRoute>
+                  <AllParcels />
+               </AdminRoute>
+            ),
+         },
+         {
+            path: 'deliveryMen',
+            element: (
+               <AdminRoute>
+                  <DeliveryMen />
+               </AdminRoute>
+            ),
+         },
+         {
+            path: 'allUsers',
+            element: (
+               <AdminRoute>
+                  <AllUsers />
+               </AdminRoute>
+            ),
          },
       ],
    },
