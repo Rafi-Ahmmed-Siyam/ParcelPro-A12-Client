@@ -10,6 +10,7 @@ const useRole = () => {
       data: role = {},
       isLoading,
       isPending,
+      refetch: reloadRole,
    } = useQuery({
       queryKey: ['role', user?.email],
       queryFn: async () => {
@@ -19,7 +20,7 @@ const useRole = () => {
       },
       enabled: !!user?.email,
    });
-   return { role, isLoading, isPending };
+   return { role, isLoading, isPending, reloadRole };
 };
 
 export default useRole;

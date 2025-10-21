@@ -8,24 +8,13 @@ import {
    TableHeader,
    TableRow,
 } from '@/components/ui/table';
+import useAllUser from '@/hooks/Custom/useAllUser';
 import useAxiosSecure from '@/hooks/Custom/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
 const AllUsers = () => {
-   const axiosSecure = useAxiosSecure();
-   const {
-      data: users = [],
-      refetch: reloadUsers,
-      isLoading,
-      isPending,
-   } = useQuery({
-      queryKey: ['users'],
-      queryFn: async () => {
-         const { data } = await axiosSecure.get('users');
-         return data;
-      },
-   });
+   const { users, reloadUsers, isPending, isLoading } = useAllUser();
    // console.log(users);
    if (isLoading || isPending) return <LoadingSpinner />;
    return (

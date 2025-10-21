@@ -12,12 +12,14 @@ import { LiaSpinnerSolid } from 'react-icons/lia';
 import { errorToast, successToast } from '@/Utilities/Toasts';
 import { useNavigate } from 'react-router-dom';
 import { addHours, isBefore, isFuture } from 'date-fns';
+import useAllUser from '@/hooks/Custom/useAllUser';
 
 const BookParcel = () => {
    const { user } = useAuth();
    const axiosSecure = useAxiosSecure();
    const navigate = useNavigate();
    const { reqLoading, setReqLoading } = useLoading();
+   const { reloadUsers } = useAllUser();
    const [weight, setWeight] = useState(0);
    const [price, setPrice] = useState(0);
 
@@ -39,9 +41,6 @@ const BookParcel = () => {
 
       return setPrice(parcelWeight * 50);
    };
-
-   // console.log('parcel-w', weight);
-   // console.log('parcel Price', price);
 
    const handleParcelBook = async (data) => {
       setReqLoading(true);
@@ -81,6 +80,7 @@ const BookParcel = () => {
             reset();
             setWeight(0);
             setPrice(0);
+            reloadUsers();
             successToast('Your Parcel Booked Successfully');
             navigate('/dashboard/myParcel');
          }

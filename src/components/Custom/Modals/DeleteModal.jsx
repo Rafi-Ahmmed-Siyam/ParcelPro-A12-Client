@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/dialog';
 import { Separator } from '@/components/ui/separator';
 
-const ConfirmModal = ({ openModal, setOpenModal, deleteConfirm }) => {
+const DeleteModal = ({ openModal, setOpenModal, deleteConfirm }) => {
    return (
       <Dialog open={openModal} onOpenChange={setOpenModal}>
          <form>
@@ -19,10 +19,13 @@ const ConfirmModal = ({ openModal, setOpenModal, deleteConfirm }) => {
                      Are you sure?
                   </DialogTitle>
                   <DialogDescription className={'text-center mt-1'}>
-                     This action cannot be undone. Do you want to continue?
+                     Are you sure you want to delete this item? <br />
+                     <span className="text-slate-600 font-medium">
+                        This action cannot be undone.
+                     </span>
                   </DialogDescription>
                </DialogHeader>
-               <Separator className={'my-2'} />
+               <Separator className={'my-1'} />
                <div className="flex justify-center items-center gap-6">
                   <DialogClose asChild>
                      <Button variant="outline">Cancel</Button>
@@ -36,4 +39,4 @@ const ConfirmModal = ({ openModal, setOpenModal, deleteConfirm }) => {
    );
 };
 
-export default ConfirmModal;
+export default DeleteModal;

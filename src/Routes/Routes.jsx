@@ -4,7 +4,7 @@ import Login from '@/Pages/Authentication/Login';
 import Signup from '@/Pages/Authentication/Signup';
 import HomePage from '@/Pages/HomePage';
 import Order from '@/Pages/Order';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router-dom';
 import PrivetRoute from './PrivetRoute';
 import BookParcel from '@/Pages/Dashboard/User/BookParcel';
 import MyParcel from '@/Pages/Dashboard/User/MyParcel';
@@ -15,6 +15,7 @@ import AllParcels from '@/Pages/Dashboard/Admin/AllParcels';
 import DeliveryMen from '@/Pages/Dashboard/Admin/DeliveryMen';
 import AllUsers from '@/Pages/Dashboard/Admin/AllUsers';
 import AdminRoute from './AdminRoute';
+import DeliveryList from '@/Pages/Dashboard/DeliveryMen/DeliveryList';
 
 const router = createBrowserRouter([
    {
@@ -113,6 +114,11 @@ const router = createBrowserRouter([
                   <AllUsers />
                </AdminRoute>
             ),
+         },
+         // DeliveryMen Pages
+         {
+            path: 'myDeliveryList',
+            element: <DeliveryList />,
          },
       ],
    },

@@ -37,6 +37,7 @@ const Signup = () => {
    const navigate = useNavigate();
    const axiosPublic = useAxiosPublic();
    const { reqLoading, setReqLoading } = useLoading();
+   const [role, setRole] = useState('User');
    const {
       register,
       handleSubmit,
@@ -44,10 +45,11 @@ const Signup = () => {
       setValue,
       formState: { errors },
    } = useForm();
+   console.log(role);
    const from = location?.state?.from?.pathname || '/';
 
    const handleSignup = async (data) => {
-      const { name, email, image, role, password } = data || {};
+      const { name, email, image, password, phone } = data || {};
       setReqLoading(true);
 
       let imageUrl = 'https://i.ibb.co.com/PZQZ8Lc7/user.png';
@@ -65,6 +67,7 @@ const Signup = () => {
             email,
             image: imageUrl,
             role,
+            phone,
          });
          console.log(data);
          if (data?.insertedId) {
@@ -137,9 +140,7 @@ const Signup = () => {
                      {/* Role Select */}
                      <Field className="md:w-1/2 mt-4 md:mt-0">
                         <FieldLabel htmlFor="role">Select a Role</FieldLabel>
-                        <Select
-                           onValueChange={(value) => setValue('role', value)}
-                        >
+                        <Select onValueChange={(value) => setRole(value)}>
                            <SelectTrigger className="w-full py-5 rounded-sm">
                               <SelectValue placeholder="Select a role" />
                            </SelectTrigger>
@@ -155,6 +156,21 @@ const Signup = () => {
                         </Select>
                      </Field>
                   </div>
+                  {/* Phone Number */}
+                  {role == 'DeliveryMen' && (
+                     <Field className="mb-4">
+                        <FieldLabel htmlFor="phone">Phone Number</FieldLabel>
+                        <Input
+                           className={'py-5 rounded-sm'}
+                           id="phone"
+                           type="tel"
+                           placeholder="m@example.com"
+                           {...register('phone', {
+                              required: role === 'DeliveryMen',
+                           })}
+                        />
+                     </Field>
+                  )}
 
                   {/* Password */}
                   <Field className="relative mb-4">

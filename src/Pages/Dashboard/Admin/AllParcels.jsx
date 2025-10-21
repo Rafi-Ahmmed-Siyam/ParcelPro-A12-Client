@@ -14,44 +14,65 @@ import {
    TableHead,
    TableHeader,
    TableRow,
+   TableCell,
 } from '@/components/ui/table';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import useParcel from '@/hooks/Custom/useParcel';
 import React from 'react';
 
 const AllParcels = () => {
    const { parcels, reloadParcelData, isPending, isLoading } = useParcel();
-   // console.log(parcels);
 
    if (isLoading || isPending) return <LoadingSpinner />;
+
    return (
       <Container>
+         {/* Header Section */}
          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
             <h1 className="text-2xl md:text-3xl font-bold text-slate-900">
                All Parcels
             </h1>
 
-            {/* Design-only Filter */}
-            <div className="flex items-center gap-2">
-               <label className="font-medium text-slate-700">
-                  Filter by Status:
-               </label>
-               <Select>
-                  <SelectTrigger className="w-40 border-slate-300">
-                     <SelectValue placeholder="Select status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                     <SelectItem value="all">All</SelectItem>
-                     <SelectItem value="pending">Pending</SelectItem>
-                     <SelectItem value="on the way">On the Way</SelectItem>
-                     <SelectItem value="delivered">Delivered</SelectItem>
-                     <SelectItem value="returned">Returned</SelectItem>
-                     <SelectItem value="canceled">Canceled</SelectItem>
-                  </SelectContent>
-               </Select>
-            </div>
+            {/* Status Filter */}
          </div>
 
-         {/* Table */}
+         {/* 🔍 Date Range Search Section */}
+         <div className="border border-slate-200 rounded-md p-4 mb-6 flex flex-col md:flex-row md:items-end md:justify-start gap-4">
+            <div className="flex flex-col">
+               <label
+                  htmlFor="fromDate"
+                  className="text-sm font-medium text-slate-700 mb-1"
+               >
+                  From Date
+               </label>
+               <Input
+                  id="fromDate"
+                  type="date"
+                  className="max-w-[220px] lg:w-[220px]"
+               />
+            </div>
+
+            <div className="flex flex-col">
+               <label
+                  htmlFor="toDate"
+                  className="text-sm font-medium text-slate-700 mb-1"
+               >
+                  To Date
+               </label>
+               <Input
+                  id="toDate"
+                  type="date"
+                  className="max-w-[220px] lg:w-[220px]"
+               />
+            </div>
+
+            <Button className="bg-primary text-white px-6 mt-2 md:mt-0">
+               Search
+            </Button>
+         </div>
+
+         {/* Table Section */}
          <div className="border-2 border-slate-200 rounded-sm w-full px-2 lg:px-4 py-2.5 overflow-x-auto">
             <Table className="min-w-full">
                <TableHeader className="bg-slate-100">
@@ -62,11 +83,11 @@ const AllParcels = () => {
                      <TableHead>Req. Del. Date</TableHead>
                      <TableHead>Cost</TableHead>
                      <TableHead>Status</TableHead>
-                     <TableHead>Manage</TableHead>
+                     <TableHead className="text-center">Manage</TableHead>
                   </TableRow>
                </TableHeader>
+
                <TableBody>
-                  {/* Table row */}
                   {!parcels?.length ? (
                      <TableRow>
                         <TableCell
@@ -85,7 +106,6 @@ const AllParcels = () => {
                         />
                      ))
                   )}
-                  {/* <AllParcelsRow /> */}
                </TableBody>
             </Table>
          </div>

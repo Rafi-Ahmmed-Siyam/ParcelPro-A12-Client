@@ -32,7 +32,7 @@ const AllParcelsRow = ({ parcel }) => {
          {/* status */}
          <TableCell className={'capitalize'}>{bookingStatus}</TableCell>
          {/* Manage button */}
-         <TableCell>
+         <TableCell className={'text-center'}>
             <Button size="sm" variant="default">
                Manage
             </Button>

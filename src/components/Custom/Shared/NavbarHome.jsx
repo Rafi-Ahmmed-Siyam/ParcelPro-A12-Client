@@ -52,6 +52,21 @@ const NavbarHome = () => {
          </DropdownMenuItem>
       </>
    );
+   const DeliveryMenLink = (
+      <>
+         <DropdownMenuItem>
+            <NavLink
+               to={'/dashboard/myDeliveryList'}
+               className={
+                  'flex justify-start items-center gap-1.5  font-medium'
+               }
+            >
+               <MdOutlineSpaceDashboard className="size-5 text-black " />
+               Dashboard
+            </NavLink>
+         </DropdownMenuItem>
+      </>
+   );
    return (
       <nav className="px-1.5 md:px-3 lg:px-4 py-3  bg-teal-600 shadow-md ">
          <div className="flex justify-between items-center ">
@@ -107,6 +122,7 @@ const NavbarHome = () => {
                            <DropdownMenuSeparator />
                            {role.role === 'Admin' && adminLink}
                            {role.role === 'User' && userLink}
+                           {role.role === 'DeliveryMen' && DeliveryMenLink}
 
                            <Button
                               onClick={() => logOut()}

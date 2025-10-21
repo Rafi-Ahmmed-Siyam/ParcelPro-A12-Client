@@ -3,10 +3,10 @@ import { TableCell, TableRow } from '@/components/ui/table';
 import { formateDate } from '@/Utilities/dateFormater';
 import React, { useState } from 'react';
 import { TbCurrencyTaka } from 'react-icons/tb';
-import ConfirmModal from '../Modals/ConfirmModal';
 import useAxiosSecure from '@/hooks/Custom/useAxiosSecure';
 import { successToast } from '@/Utilities/Toasts';
 import { Link } from 'react-router-dom';
+import DeleteModal from '../Modals/DeleteModal';
 
 const MyParcelRow = ({ parcel, refetch }) => {
    const { _id, bookingStatus, price, parcelType, deliveryDate, createdAt } =
@@ -60,7 +60,7 @@ const MyParcelRow = ({ parcel, refetch }) => {
             >
                Delete
             </Button>
-            <ConfirmModal
+            <DeleteModal
                openModal={open}
                setOpenModal={setOpen}
                deleteConfirm={handleDeleteParcel}

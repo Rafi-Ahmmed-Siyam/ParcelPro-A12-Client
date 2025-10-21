@@ -6,6 +6,7 @@ import {
    Bike,
    Boxes,
    ChartNoAxesCombined,
+   ClipboardList,
    LogOut,
    NotebookPen,
    Package,
@@ -66,6 +67,23 @@ const Sidebar = () => {
          </li>
       </>
    );
+   const DeliveryMenLinks = (
+      <>
+         <li>
+            <NavLink
+               to={'/dashboard/myDeliveryList'}
+               className={getActiveClass}
+            >
+               <ClipboardList /> <span>My Delivery List</span>
+            </NavLink>
+         </li>
+         {/* <li>
+            <NavLink to={'/dashboard/bookParcel'} className={getActiveClass}>
+               <NotebookPen /> <span>Book a Parcel</span>
+            </NavLink>
+         </li> */}
+      </>
+   );
 
    return (
       <aside className="drawer-side">
@@ -91,6 +109,7 @@ const Sidebar = () => {
             <ul className="mt-10 space-y-1.5 flex-1">
                {role.role === 'User' && userLinks}
                {role.role === 'Admin' && adminLinks}
+               {role.role === 'DeliveryMen' && DeliveryMenLinks}
             </ul>
 
             {/* ---------- Bottom Section ---------- */}
