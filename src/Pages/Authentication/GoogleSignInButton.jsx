@@ -21,6 +21,7 @@ const GoogleSignInButton = ({ from }) => {
             email: user?.email,
             image: user?.photoURL,
             role: 'User',
+            createdAt: new Date(),
          });
          console.log(data);
          successToast('Login Successful');

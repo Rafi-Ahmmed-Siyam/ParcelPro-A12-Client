@@ -22,7 +22,7 @@ import React, { useState } from 'react';
 const MyParcel = () => {
    const [status, setStatus] = useState('all');
    const [userParcels, refetch, isLoading, isPending] = useUserParcels(status);
-   console.log(userParcels);
+   // console.log(userParcels);
    if (isLoading || isPending) return <LoadingSpinner />;
    return (
       <Container>
@@ -47,11 +47,11 @@ const MyParcel = () => {
                   </SelectTrigger>
                   <SelectContent>
                      <SelectItem value="all">All</SelectItem>
-                     <SelectItem value="pending">Pending</SelectItem>
-                     <SelectItem value="on the way">On the Way</SelectItem>
-                     <SelectItem value="delivered">Delivered</SelectItem>
-                     <SelectItem value="returned">Returned</SelectItem>
-                     <SelectItem value="canceled">Canceled</SelectItem>
+                     <SelectItem value="Pending">Pending</SelectItem>
+                     <SelectItem value="On The Way">On The Way</SelectItem>
+                     <SelectItem value="Delivered">Delivered</SelectItem>
+                     <SelectItem value="Returned">Returned</SelectItem>
+                     <SelectItem value="Canceled">Canceled</SelectItem>
                   </SelectContent>
                </Select>
             </div>
@@ -69,8 +69,8 @@ const MyParcel = () => {
                      <TableHead>Price</TableHead>
                      <TableHead>Delivery Men ID</TableHead>
                      <TableHead>Booking Status</TableHead>
-                     <TableHead>Update</TableHead>
-                     <TableHead>Cancel</TableHead>
+                     <TableHead>Action</TableHead>
+                     <TableHead>Action</TableHead>
                   </TableRow>
                </TableHeader>
                <TableBody>

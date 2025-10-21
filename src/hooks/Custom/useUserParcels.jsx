@@ -21,6 +21,7 @@ const useUserParcels = (status) => {
          return data;
       },
       enabled: !!user?.email,
+      
    });
    return [userParcels, refetch, isLoading, isPending];
 };

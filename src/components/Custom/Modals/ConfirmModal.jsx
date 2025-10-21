@@ -4,37 +4,45 @@ import {
    DialogClose,
    DialogContent,
    DialogDescription,
+   DialogFooter,
    DialogHeader,
    DialogTitle,
+   DialogTrigger,
 } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 
-const DeleteModal = ({ openModal, setOpenModal, deleteConfirm }) => {
+const ConfirmModal = ({
+   open,
+   setOpen,
+   heading,
+   description,
+   handleConfirm,
+}) => {
    return (
-      <Dialog open={openModal} onOpenChange={setOpenModal}>
+      <Dialog open={open} onOpenChange={setOpen}>
          <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
                <DialogTitle className={'text-center text-2xl'}>
-                  Are you sure?
+                  {heading}
                </DialogTitle>
                <DialogDescription className={'text-center mt-1'}>
-                  Are you sure you want to delete this item? <br />
-                  <span className="text-slate-600 font-medium">
-                     This action cannot be undone.
-                  </span>
+                  {description}
                </DialogDescription>
             </DialogHeader>
+
             <Separator className={'my-1'} />
             <div className="flex justify-center items-center gap-6">
                <DialogClose asChild>
                   <Button variant="outline">Cancel</Button>
                </DialogClose>
 
-               <Button onClick={deleteConfirm}>Delete</Button>
+               <Button onClick={handleConfirm}>Confirm</Button>
             </div>
          </DialogContent>
       </Dialog>
    );
 };
 
-export default DeleteModal;
+export default ConfirmModal;

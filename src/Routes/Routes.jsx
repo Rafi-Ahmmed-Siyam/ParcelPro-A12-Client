@@ -16,6 +16,9 @@ import DeliveryMen from '@/Pages/Dashboard/Admin/DeliveryMen';
 import AllUsers from '@/Pages/Dashboard/Admin/AllUsers';
 import AdminRoute from './AdminRoute';
 import DeliveryList from '@/Pages/Dashboard/DeliveryMen/DeliveryList';
+import MyReviews from '@/Pages/Dashboard/DeliveryMen/MyReviews';
+import DeliveryMenRoute from './DeliveryMenRoute';
+import CheckOut from '@/Pages/Dashboard/User/CheckOut';
 
 const router = createBrowserRouter([
    {
@@ -81,6 +84,14 @@ const router = createBrowserRouter([
                </PrivetRoute>
             ),
          },
+         {
+            path: 'checkout',
+            element: (
+               <PrivetRoute>
+                  <CheckOut />
+               </PrivetRoute>
+            ),
+         },
 
          // Admin pages
          {
@@ -118,7 +129,19 @@ const router = createBrowserRouter([
          // DeliveryMen Pages
          {
             path: 'myDeliveryList',
-            element: <DeliveryList />,
+            element: (
+               <DeliveryMenRoute>
+                  <DeliveryList />
+               </DeliveryMenRoute>
+            ),
+         },
+         {
+            path: 'myReviews',
+            element: (
+               <DeliveryMenRoute>
+                  <MyReviews />
+               </DeliveryMenRoute>
+            ),
          },
       ],
    },

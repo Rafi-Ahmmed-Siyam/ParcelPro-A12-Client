@@ -68,6 +68,7 @@ const Signup = () => {
             image: imageUrl,
             role,
             phone,
+            createdAt: new Date(),
          });
          console.log(data);
          if (data?.insertedId) {

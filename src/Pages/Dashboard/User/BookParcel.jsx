@@ -69,7 +69,7 @@ const BookParcel = () => {
          deliveryLatitude: latitude,
          deliveryLongitude: longitude,
          createdAt: new Date(),
-         bookingStatus: 'pending',
+         bookingStatus: 'Pending',
       };
 
       try {

@@ -33,11 +33,8 @@ const AllParcels = () => {
             <h1 className="text-2xl md:text-3xl font-bold text-slate-900">
                All Parcels
             </h1>
-
-            {/* Status Filter */}
          </div>
-
-         {/* 🔍 Date Range Search Section */}
+         {/* Date search section */}
          <div className="border border-slate-200 rounded-md p-4 mb-6 flex flex-col md:flex-row md:items-end md:justify-start gap-4">
             <div className="flex flex-col">
                <label
@@ -72,7 +69,7 @@ const AllParcels = () => {
             </Button>
          </div>
 
-         {/* Table Section */}
+         {/* table Section */}
          <div className="border-2 border-slate-200 rounded-sm w-full px-2 lg:px-4 py-2.5 overflow-x-auto">
             <Table className="min-w-full">
                <TableHeader className="bg-slate-100">

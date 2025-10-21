@@ -36,6 +36,7 @@ const AllUsers = () => {
                         User’s Email
                      </TableHead>
                      <TableHead className={'text-center'}>Phone Num.</TableHead>
+                     <TableHead className={'text-center'}>Role</TableHead>
                      <TableHead className={'text-center'}>
                         Total parcels Booked
                      </TableHead>

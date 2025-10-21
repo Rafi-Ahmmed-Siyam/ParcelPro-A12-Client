@@ -15,6 +15,7 @@ import useAuth from '@/hooks/Custom/useAuth';
 import { Button } from '@/components/ui/button';
 import { TbUsersGroup } from 'react-icons/tb';
 import useRole from '@/hooks/Custom/useRole';
+import { MdOutlineReviews } from 'react-icons/md';
 
 const Sidebar = () => {
    const { user, logOut } = useAuth();
@@ -31,18 +32,19 @@ const Sidebar = () => {
       <>
          <li>
             <NavLink to={'/dashboard/statistics'} className={getActiveClass}>
-               <ChartNoAxesCombined /> <span>Statistics</span>
+               <ChartNoAxesCombined className="size-5" />{' '}
+               <span>Statistics</span>
             </NavLink>
          </li>
          <li>
             <NavLink to={'/dashboard/allParcels'} className={getActiveClass}>
-               <Boxes /> <span>All Parcels</span>
+               <Boxes className="size-5" /> <span>All Parcels</span>
             </NavLink>
          </li>
 
          <li>
             <NavLink to={'/dashboard/deliveryMen'} className={getActiveClass}>
-               <Bike /> <span>All Delivery Men</span>
+               <Bike className="size-5" /> <span>All Delivery Men</span>
             </NavLink>
          </li>
          <li>
@@ -57,12 +59,12 @@ const Sidebar = () => {
       <>
          <li>
             <NavLink to={'/dashboard/myParcel'} className={getActiveClass}>
-               <Package /> <span>My Parcel</span>
+               <Package className="size-5" /> <span>My Parcel</span>
             </NavLink>
          </li>
          <li>
             <NavLink to={'/dashboard/bookParcel'} className={getActiveClass}>
-               <NotebookPen /> <span>Book a Parcel</span>
+               <NotebookPen className="size-5" /> <span>Book a Parcel</span>
             </NavLink>
          </li>
       </>
@@ -74,14 +76,15 @@ const Sidebar = () => {
                to={'/dashboard/myDeliveryList'}
                className={getActiveClass}
             >
-               <ClipboardList /> <span>My Delivery List</span>
+               <ClipboardList className="size-5" />{' '}
+               <span>My Delivery List</span>
             </NavLink>
          </li>
-         {/* <li>
-            <NavLink to={'/dashboard/bookParcel'} className={getActiveClass}>
-               <NotebookPen /> <span>Book a Parcel</span>
+         <li>
+            <NavLink to={'/dashboard/myReviews'} className={getActiveClass}>
+               <MdOutlineReviews className="size-5" /> <span>My Reviews</span>
             </NavLink>
-         </li> */}
+         </li>
       </>
    );
 
