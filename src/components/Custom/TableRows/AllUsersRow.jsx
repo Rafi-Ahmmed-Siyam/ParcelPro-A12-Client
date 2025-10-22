@@ -63,6 +63,7 @@ const AllUsersRow = ({ user }) => {
                }}
                size="sm"
                variant="default"
+               className={'bg-teal-500 text-white  hover:bg-teal-600'}
             >
                Make Deli. Men
             </Button>
@@ -77,6 +78,9 @@ const AllUsersRow = ({ user }) => {
                }}
                size="sm"
                variant="default"
+               className={
+                  'bg-cyan-500 text-white  hover:bg-cyan-600'
+               }
             >
                Make Admin
             </Button>

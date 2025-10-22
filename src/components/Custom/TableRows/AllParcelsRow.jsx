@@ -76,6 +76,9 @@ const AllParcelsRow = ({ parcel }) => {
                onClick={() => setOpenModal(true)}
                size="sm"
                variant="default"
+               className={
+                  'bg-indigo-600 text-white   hover:bg-indigo-700'
+               }
             >
                Manage
             </Button>

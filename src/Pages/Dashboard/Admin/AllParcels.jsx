@@ -2,13 +2,6 @@ import Container from '@/components/Custom/Shared/Container';
 import AllParcelsRow from '@/components/Custom/TableRows/AllParcelsRow';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import {
-   Select,
-   SelectContent,
-   SelectItem,
-   SelectTrigger,
-   SelectValue,
-} from '@/components/ui/select';
-import {
    Table,
    TableBody,
    TableHead,
@@ -19,13 +12,33 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import useParcel from '@/hooks/Custom/useParcel';
-import React from 'react';
+import React, { useState } from 'react';
+import useAxiosSecure from '@/hooks/Custom/useAxiosSecure';
+import { errorToast } from '@/Utilities/Toasts';
 
 const AllParcels = () => {
-   const { parcels, reloadParcelData, isPending, isLoading } = useParcel();
+   const axiosSecure = useAxiosSecure();
+   const [fromDate, setFromDate] = useState('');
+   const [toDate, setToDate] = useState('');
+   const [filteredParcel, setFilteredParcel] = useState(null);
+   const { parcels, reloadParcelData, isPending, isLoading, getSearchData } =
+      useParcel();
+
+   const handleSearch = async () => {
+      if (!fromDate || !toDate) return errorToast('Please first select date!');
+      const data = await getSearchData(fromDate, toDate);
+      setFilteredParcel(data);
+   };
+
+   const handleReset = () => {
+      setFromDate('');
+      setToDate('');
+      setFilteredParcel(null);
+   };
+
+   const parcelsData = filteredParcel || parcels;
 
    if (isLoading || isPending) return <LoadingSpinner />;
-
    return (
       <Container>
          {/* Header Section */}
@@ -34,39 +47,62 @@ const AllParcels = () => {
                All Parcels
             </h1>
          </div>
-         {/* Date search section */}
-         <div className="border border-slate-200 rounded-md p-4 mb-6 flex flex-col md:flex-row md:items-end md:justify-start gap-4">
-            <div className="flex flex-col">
-               <label
-                  htmlFor="fromDate"
-                  className="text-sm font-medium text-slate-700 mb-1"
-               >
-                  From Date
-               </label>
-               <Input
-                  id="fromDate"
-                  type="date"
-                  className="max-w-[220px] lg:w-[220px]"
-               />
-            </div>
+         {/* Search by Date Range Section */}
+         <div className="border border-slate-200 rounded-md p-5 mb-6 bg-slate-50">
+            <h2 className="text-base font-semibold text-slate-700 mb-4">
+               Search by Requested Delivery Date Range
+            </h2>
 
-            <div className="flex flex-col">
-               <label
-                  htmlFor="toDate"
-                  className="text-sm font-medium text-slate-700 mb-1"
-               >
-                  To Date
-               </label>
-               <Input
-                  id="toDate"
-                  type="date"
-                  className="max-w-[220px] lg:w-[220px]"
-               />
-            </div>
+            <div className="flex flex-col sm:flex-row sm:items-end sm:gap-6 gap-4">
+               <div className="flex flex-col w-full md:w-[250px]">
+                  <label
+                     htmlFor="fromDate"
+                     className="text-sm font-medium text-slate-600 mb-1"
+                  >
+                     From Date
+                  </label>
+                  <Input
+                     id="fromDate"
+                     type="date"
+                     className="rounded-sm py-2 w-full"
+                     value={fromDate}
+                     onChange={(e) => setFromDate(e.target.value)}
+                  />
+               </div>
 
-            <Button className="bg-primary text-white px-6 mt-2 md:mt-0">
-               Search
-            </Button>
+               <div className="flex flex-col w-full md:w-[250px]">
+                  <label
+                     htmlFor="toDate"
+                     className="text-sm font-medium text-slate-600 mb-1"
+                  >
+                     To Date
+                  </label>
+                  <Input
+                     id="toDate"
+                     type="date"
+                     value={toDate}
+                     className="rounded-sm py-2 w-full"
+                     onChange={(e) => setToDate(e.target.value)}
+                  />
+               </div>
+
+               <div className="flex items-center">
+                  <Button
+                     onClick={handleSearch}
+                     className={'bg-blue-600 text-white hover:bg-blue-700'}
+                  >
+                     Search
+                  </Button>
+                  <Button
+                     onClick={handleReset}
+                     className={
+                        'ml-2 bg-gray-300 text-gray-800 hover:bg-gray-400'
+                     }
+                  >
+                     Reset
+                  </Button>
+               </div>
+            </div>
          </div>
 
          {/* table Section */}
@@ -85,7 +121,7 @@ const AllParcels = () => {
                </TableHeader>
 
                <TableBody>
-                  {!parcels?.length ? (
+                  {!parcelsData?.length ? (
                      <TableRow>
                         <TableCell
                            colSpan={9}
@@ -95,7 +131,7 @@ const AllParcels = () => {
                         </TableCell>
                      </TableRow>
                   ) : (
-                     parcels.map((parcel) => (
+                     parcelsData.map((parcel) => (
                         <AllParcelsRow
                            key={parcel._id}
                            parcel={parcel}

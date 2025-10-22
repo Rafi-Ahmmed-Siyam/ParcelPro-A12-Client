@@ -8,7 +8,10 @@ const AllDeliveryMenRow = ({ deliveryMan }) => {
          <TableCell>
             <div className="avatar">
                <div className="mask mask-squircle h-10 w-10">
-                  <img src={image} alt="Avatar Tailwind CSS Component" />
+                  <img
+                     src={image || 'https://i.ibb.co.com/fYrk3K68/user-1.png'}
+                     alt="Delivery Man image"
+                  />
                </div>
             </div>
          </TableCell>

@@ -8,15 +8,34 @@ const useParcel = () => {
       refetch: reloadParcelData,
       isLoading,
       isPending,
+      isFetching,
    } = useQuery({
       queryKey: ['parcels'],
       queryFn: async () => {
          const { data } = await axiosSecure.get('/parcels/admin');
-         // console.log(data);
+
          return data;
       },
+
+      keepPreviousData: true,
    });
-   return { parcels, reloadParcelData, isPending, isLoading };
+
+   // Get Search Data
+   const getSearchData = async (fromDate, toDate) => {
+      const { data } = await axiosSecure.get(
+         `/parcels/admin?fromDate=${fromDate}&toDate=${toDate}`
+      );
+      return data;
+   };
+
+   return {
+      parcels,
+      reloadParcelData,
+      isPending,
+      isLoading,
+      isFetching,
+      getSearchData,
+   };
 };
 
 export default useParcel;

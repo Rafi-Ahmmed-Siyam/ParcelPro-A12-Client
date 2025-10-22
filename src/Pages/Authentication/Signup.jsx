@@ -165,7 +165,7 @@ const Signup = () => {
                            className={'py-5 rounded-sm'}
                            id="phone"
                            type="tel"
-                           placeholder="m@example.com"
+                           placeholder="0**********"
                            {...register('phone', {
                               required: role === 'DeliveryMen',
                            })}
