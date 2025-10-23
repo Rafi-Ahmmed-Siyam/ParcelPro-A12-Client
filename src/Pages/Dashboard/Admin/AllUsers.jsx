@@ -46,7 +46,7 @@ const AllUsers = () => {
 
    if (isLoading || isPending) return <LoadingSpinner />;
    return (
-      <Container className="min-h-[calc(100vh-100px)] flex flex-col">
+      <Container className="relative">
          {/* Header Section - Stays at the top */}
          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
             <h1 className="text-2xl md:text-3xl font-bold text-slate-900">
@@ -79,7 +79,6 @@ const AllUsers = () => {
                   </TableRow>
                </TableHeader>
                <TableBody>
-                  {/* ... (TableBody content remains the same) ... */}
                   {!users?.length ? (
                      <TableRow>
                         <TableCell
@@ -91,18 +90,22 @@ const AllUsers = () => {
                      </TableRow>
                   ) : (
                      users.map((user) => (
-                        <AllUsersRow key={user._id} user={user} />
+                        <AllUsersRow
+                           key={user._id}
+                           user={user}
+                           reloadUsers={reloadUsers}
+                        />
                      ))
                   )}
                </TableBody>
             </Table>
          </div>
 
-         {/* Pagination Button - Pushed to the bottom by the flex-grow on the table container */}
-         <div className="mt-6 flex justify-center">
-            <Pagination>
+         {/* Pagination button */}
+         <div className="mt-[60px] md:mt-0 lg:mt-8 absolute left-1/2 top-6/12 -translate-x-1/2 lg:-translate-x-0 ">
+            <Pagination className={''}>
                <PaginationContent className="flex items-center gap-2">
-                  {/* Previous Button */}
+                  {/* Previous Btn */}
                   <PaginationItem>
                      <Button
                         onClick={() =>

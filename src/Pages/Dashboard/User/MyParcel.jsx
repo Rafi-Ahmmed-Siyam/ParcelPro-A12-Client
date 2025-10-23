@@ -74,24 +74,13 @@ const MyParcel = () => {
                   </TableRow>
                </TableHeader>
                <TableBody>
-                  {!userParcels?.length ? (
-                     <TableRow>
-                        <TableCell
-                           colSpan={9}
-                           className="text-center py-4 text-slate-500"
-                        >
-                           No parcels found.
-                        </TableCell>
-                     </TableRow>
-                  ) : (
-                     userParcels.map((parcel) => (
-                        <MyParcelRow
-                           key={parcel._id}
-                           parcel={parcel}
-                           refetch={refetch}
-                        />
-                     ))
-                  )}
+                  {userParcels.map((parcel) => (
+                     <MyParcelRow
+                        key={parcel._id}
+                        parcel={parcel}
+                        refetch={refetch}
+                     />
+                  ))}
                </TableBody>
             </Table>
          </div>

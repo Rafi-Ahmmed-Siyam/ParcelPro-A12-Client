@@ -8,9 +8,12 @@ import useAxiosSecure from '@/hooks/Custom/useAxiosSecure';
 import useUserParcels from '@/hooks/Custom/useUserParcels';
 import useParcel from '@/hooks/Custom/useParcel';
 import { successToast } from '@/Utilities/Toasts';
+import useRole from '@/hooks/Custom/useRole';
 
 const DeliveryListRow = ({ delivery, reloadDeliveries }) => {
    const axiosSecure = useAxiosSecure();
+   const { role } = useRole();
+   console.log(role)
    const {
       _id,
       deliveryDate,
@@ -32,6 +35,7 @@ const DeliveryListRow = ({ delivery, reloadDeliveries }) => {
          const { data } = await axiosSecure.patch('/deliveries', {
             parcelId: _id,
             status,
+            deliveryMenId: role.id,
          });
          console.log(data);
          if (data?.modifiedCount > 0) {

@@ -7,12 +7,12 @@ import useAxiosSecure from '@/hooks/Custom/useAxiosSecure';
 import useAllUser from '@/hooks/Custom/useAllUser';
 import useRole from '@/hooks/Custom/useRole';
 import { successToast } from '@/Utilities/Toasts';
+import { MdOutlineAdminPanelSettings } from 'react-icons/md';
 
-const AllUsersRow = ({ user }) => {
+const AllUsersRow = ({ user, reloadUsers }) => {
    const { _id, email, name, phone, role, totalCost, parcelsBooked } =
       user || {};
    const axiosSecure = useAxiosSecure();
-   const { reloadUsers } = useAllUser();
    const { reloadRole } = useRole();
    const [openModal, setOpenModal] = useState(false);
    const [selectedRole, setSelectedRole] = useState('');
@@ -43,7 +43,22 @@ const AllUsersRow = ({ user }) => {
          {/* Sender Phone */}
          <TableCell className={'text-center'}>{phone || 'N/A'}</TableCell>
          {/* Role */}
-         <TableCell className={'text-center'}>{role || 'N/A'}</TableCell>
+         <TableCell className={'text-center'}>
+            <span
+               className={`badge px-3 py-3 font-medium text-xs capitalize
+            ${
+               role === 'Admin'
+                  ? 'badge-error'
+                  : role === 'DeliveryMen'
+                  ? 'badge-success'
+                  : role === 'User'
+                  ? 'badge-info'
+                  : ''
+            }`}
+            >
+               {role}
+            </span>
+         </TableCell>
          {/*Parcel Booked */}
          <TableCell className={'text-center'}>
             {parcelsBooked || 'No parcel booked'}
@@ -78,9 +93,7 @@ const AllUsersRow = ({ user }) => {
                }}
                size="sm"
                variant="default"
-               className={
-                  'bg-cyan-500 text-white  hover:bg-cyan-600'
-               }
+               className={'bg-cyan-500 text-white  hover:bg-cyan-600'}
             >
                Make Admin
             </Button>

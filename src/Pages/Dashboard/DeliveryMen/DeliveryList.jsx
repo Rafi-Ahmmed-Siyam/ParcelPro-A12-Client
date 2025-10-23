@@ -17,7 +17,7 @@ const DeliveryList = () => {
    const { role, reloadRole } = useRole();
    // console.log(role.verified);
    const [modalOpen, setModalOpen] = useState(false);
-   // Open modal automatically if not verified
+   // Open modal automatically if deliveryman not verified means deliveryman has no number
    useEffect(() => {
       if (role && role.verified === false) {
          setModalOpen(true);
@@ -25,6 +25,7 @@ const DeliveryList = () => {
          setModalOpen(false);
       }
    }, [role, role.verified]);
+
    const handleOpenChange = (open) => {
       if (role.verified) {
          setModalOpen(open);

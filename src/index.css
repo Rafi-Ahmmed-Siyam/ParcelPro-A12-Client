@@ -1,9 +1,31 @@
+/* manRope */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
+/* Nutino */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
 @import 'tailwindcss';
 @plugin "daisyui";
 @import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
+body{
+   font-family: 'Manrope', sans-serif;
+   font-optical-sizing: auto;
+   font-style: normal;
+}
+
+h1,
+h2 {
+   font-family: 'Nunito', sans-serif;
+   font-optical-sizing: auto;
+   font-style: normal;
+}
+p,
+td {
+   font-family: 'Manrope', sans-serif;
+   font-optical-sizing: auto;
+   font-style: normal;
+}
 button {
    cursor: pointer;
 }

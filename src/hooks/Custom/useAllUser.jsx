@@ -10,10 +10,10 @@ const useAllUser = (currentPage) => {
       isLoading,
       isPending,
    } = useQuery({
-      queryKey: ['users', currentPage],
+      queryKey: ['allUsers', currentPage],
       queryFn: async () => {
          const { data } = await axiosSecure.get(
-            `/users?currentPage=${currentPage}&limit=5`
+            `/users/admin?currentPage=${currentPage}&limit=5`
          );
          return data;
       },

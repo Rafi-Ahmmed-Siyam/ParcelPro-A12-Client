@@ -115,7 +115,7 @@ const AllParcels = () => {
                      <TableHead>Booking Date</TableHead>
                      <TableHead>Req. Del. Date</TableHead>
                      <TableHead>Cost</TableHead>
-                     <TableHead>Status</TableHead>
+                     <TableHead className={'text-center'}>Status</TableHead>
                      <TableHead className="text-center">Manage</TableHead>
                   </TableRow>
                </TableHeader>

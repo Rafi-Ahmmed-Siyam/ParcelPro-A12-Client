@@ -68,7 +68,26 @@ const AllParcelsRow = ({ parcel }) => {
             <TbCurrencyTaka className="size-5" />
          </TableCell>
          {/* status */}
-         <TableCell className={'capitalize'}>{bookingStatus}</TableCell>
+         <TableCell className={'capitalize text-center'}>
+            <span
+               className={`badge px-3 py-3 font-medium text-xs capitalize
+    ${
+       bookingStatus === 'Pending'
+          ? 'badge-warning'
+          : bookingStatus === 'On The Way'
+          ? 'badge-info'
+          : bookingStatus === 'Delivered'
+          ? 'badge-success'
+          : bookingStatus === 'Returned'
+          ? 'badge-secondary'
+          : bookingStatus === 'Canceled'
+          ? 'badge-error'
+          : ''
+    }`}
+            >
+               {bookingStatus}
+            </span>
+         </TableCell>
          {/* Manage button */}
          <TableCell className={'text-center'}>
             <Button
@@ -76,9 +95,7 @@ const AllParcelsRow = ({ parcel }) => {
                onClick={() => setOpenModal(true)}
                size="sm"
                variant="default"
-               className={
-                  'bg-indigo-600 text-white   hover:bg-indigo-700'
-               }
+               className={'bg-indigo-600 text-white   hover:bg-indigo-700'}
             >
                Manage
             </Button>

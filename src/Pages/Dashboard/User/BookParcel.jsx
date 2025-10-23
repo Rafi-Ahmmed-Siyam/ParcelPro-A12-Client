@@ -9,17 +9,17 @@ import { TbCurrencyTaka } from 'react-icons/tb';
 import useAxiosSecure from '@/hooks/Custom/useAxiosSecure';
 import useLoading from '@/hooks/Custom/useLoading';
 import { LiaSpinnerSolid } from 'react-icons/lia';
-import { errorToast, successToast } from '@/Utilities/Toasts';
+import { successToast } from '@/Utilities/Toasts';
 import { useNavigate } from 'react-router-dom';
-import { addHours, isBefore, isFuture } from 'date-fns';
-import useAllUser from '@/hooks/Custom/useAllUser';
+import { addHours, isBefore } from 'date-fns';
+import useParcel from '@/hooks/Custom/useParcel';
 
 const BookParcel = () => {
    const { user } = useAuth();
    const axiosSecure = useAxiosSecure();
    const navigate = useNavigate();
    const { reqLoading, setReqLoading } = useLoading();
-   const { reloadUsers } = useAllUser();
+   const { reloadParcelData } = useParcel();
    const [weight, setWeight] = useState(0);
    const [price, setPrice] = useState(0);
 
@@ -80,7 +80,7 @@ const BookParcel = () => {
             reset();
             setWeight(0);
             setPrice(0);
-            reloadUsers();
+            reloadParcelData();
             successToast('Your Parcel Booked Successfully');
             navigate('/dashboard/myParcel');
          }

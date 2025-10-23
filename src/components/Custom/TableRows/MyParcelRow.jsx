@@ -1,132 +1,157 @@
-import Container from '@/components/Custom/Shared/Container';
-import AllParcelsRow from '@/components/Custom/TableRows/AllParcelsRow';
-import LoadingSpinner from '@/components/LoadingSpinner';
-import {
-   Table,
-   TableBody,
-   TableHead,
-   TableHeader,
-   TableRow,
-   TableCell,
-} from '@/components/ui/table';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import useParcel from '@/hooks/Custom/useParcel';
+import { TableCell, TableRow } from '@/components/ui/table';
+import { formateDate } from '@/Utilities/dateFormater';
 import React, { useState } from 'react';
+import { TbCurrencyTaka } from 'react-icons/tb';
+import useAxiosSecure from '@/hooks/Custom/useAxiosSecure';
+import { errorToast, successToast } from '@/Utilities/Toasts';
+import { Link } from 'react-router-dom';
+import DeleteModal from '../Modals/DeleteModal';
+import GiveReviewMOdal from '../Modals/GiveReviewMOdal';
 
-const AllParcels = () => {
-   const [fromDate, setFromDate] = useState('');
-   const [toDate, setToDate] = useState('');
-   const [searchClicked, setSearchClicked] = useState(false);
+const MyParcelRow = ({ parcel, refetch }) => {
+   const {
+      _id,
+      bookingStatus,
+      price,
+      parcelType,
+      deliveryDate,
+      deliveryManId,
+      createdAt,
+      approxDeliveryDate,
+   } = parcel || {};
+   const axiosSecure = useAxiosSecure();
+   const [open, setOpen] = useState(false);
+   const [openReview, setOpenReview] = useState(false);
 
-   const { parcels, reloadParcelData, isPending, isLoading, isFetching } =
-      useParcel(fromDate, toDate, searchClicked);
-
-   const handleSearch = () => {
-      if (!fromDate || !toDate) {
-         alert('দয়া করে From এবং To date নির্বাচন করুন।');
-         return;
+   // Handle delete button
+   const handleDeleteParcel = async () => {
+      try {
+         const { data } = await axiosSecure.delete(`/parcels/${_id}`);
+         console.log(data);
+         if (data.deletedCount > 0) {
+            refetch();
+            successToast('Parcel Deleted Successful!');
+         }
+      } catch (err) {
+         console.log(err);
       }
-      setSearchClicked((prev) => !prev); // toggle করে query run
    };
 
-   if (isLoading && !parcels.length) return <LoadingSpinner />;
-
    return (
-      <Container>
-         {/* Header */}
-         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-            <h1 className="text-2xl md:text-3xl font-bold text-slate-900">
-               All Parcels
-            </h1>
-         </div>
+      <>
+         <TableRow>
+            {/* Parcel Type */}
+            <TableCell>{parcelType}</TableCell>
+            {/* req date */}
+            <TableCell>{formateDate(deliveryDate)}</TableCell>
+            {/* appx date */}
+            <TableCell>{formateDate(approxDeliveryDate) || 'N/A'}</TableCell>
+            {/* booking date */}
+            <TableCell>{formateDate(createdAt)}</TableCell>
+            {/* price */}
+            <TableCell className={'flex justify-start items-center '}>
+               {price}
+               <TbCurrencyTaka className="size-5" />
+            </TableCell>
+            {/* delivery man */}
+            <TableCell>{deliveryManId || 'Not Assigned'}</TableCell>
+            {/* status */}
+            <TableCell className={'capitalize'}>
+               <span
+                  className={`badge px-3 py-3 font-medium text-xs capitalize
+    ${
+       bookingStatus === 'Pending'
+          ? 'badge-warning'
+          : bookingStatus === 'On The Way'
+          ? 'badge-info'
+          : bookingStatus === 'Delivered'
+          ? 'badge-success'
+          : bookingStatus === 'Returned'
+          ? 'badge-secondary'
+          : bookingStatus === 'Canceled'
+          ? 'badge-error'
+          : ''
+    }`}
+               >
+                  {bookingStatus}
+               </span>
+            </TableCell>
+            {bookingStatus === 'Delivered' ? (
+               <>
+                  <TableCell>
+                     <Button
+                        onClick={() => setOpenReview(true)}
+                        size="sm"
+                        variant="default"
+                        className={'bg-blue-500 text-white  hover:bg-blue-600'}
+                     >
+                        Review
+                     </Button>
+                  </TableCell>
+                  <TableCell>
+                     <Button
+                        size="sm"
+                        variant="default"
+                        className={
+                           'bg-green-500 text-white px-5 hover:bg-green-600'
+                        }
+                     >
+                        <Link to={'/dashboard/checkout'}>Pay</Link>
+                     </Button>
+                  </TableCell>
+               </>
+            ) : (
+               <>
+                  <TableCell>
+                     <Button
+                        size="sm"
+                        variant="default"
+                        className={
+                           'bg-yellow-400 text-white  hover:bg-yellow-500'
+                        }
+                        disabled={
+                           bookingStatus === 'On The Way' ||
+                           bookingStatus === 'Delivered'
+                        }
+                     >
+                        <Link to={`/dashboard/updateParcel/${_id}`}>
+                           {' '}
+                           Update
+                        </Link>
+                     </Button>
+                  </TableCell>
+                  <TableCell>
+                     <Button
+                        onClick={() => {
+                           bookingStatus === 'Pending'
+                              ? setOpen(true)
+                              : errorToast(
+                                   'You cannot delete this delivery because its status is not pending.'
+                                );
+                        }}
+                        size="sm"
+                        variant="destructive"
+                     >
+                        Delete
+                     </Button>
+                  </TableCell>
+               </>
+            )}
+         </TableRow>
 
-         {/* Search Section */}
-         <div className="border border-slate-200 rounded-md p-5 mb-6 bg-slate-50">
-            <h2 className="text-base font-semibold text-slate-700 mb-4">
-               Search by Requested Delivery Date Range
-            </h2>
-
-            <div className="flex flex-col sm:flex-row sm:items-end sm:gap-6 gap-4">
-               <div className="flex flex-col w-full md:w-[250px]">
-                  <label
-                     htmlFor="fromDate"
-                     className="text-sm font-medium text-slate-600 mb-1"
-                  >
-                     From Date
-                  </label>
-                  <Input
-                     id="fromDate"
-                     type="date"
-                     value={fromDate}
-                     onChange={(e) => setFromDate(e.target.value)}
-                     className="rounded-sm py-2 w-full"
-                  />
-               </div>
-
-               <div className="flex flex-col w-full md:w-[250px]">
-                  <label
-                     htmlFor="toDate"
-                     className="text-sm font-medium text-slate-600 mb-1"
-                  >
-                     To Date
-                  </label>
-                  <Input
-                     id="toDate"
-                     type="date"
-                     value={toDate}
-                     onChange={(e) => setToDate(e.target.value)}
-                     className="rounded-sm py-2 w-full"
-                  />
-               </div>
-
-               <div className="flex items-center">
-                  <Button onClick={handleSearch} className="btn btn-neutral">
-                     Search
-                  </Button>
-               </div>
-            </div>
-         </div>
-
-         {/* Table Section */}
-         <div className="border-2 border-slate-200 rounded-sm w-full px-2 lg:px-4 py-2.5 overflow-x-auto">
-            <Table className="min-w-full">
-               <TableHeader className="bg-slate-100">
-                  <TableRow>
-                     <TableHead>Sender Name</TableHead>
-                     <TableHead>Sender Phone</TableHead>
-                     <TableHead>Booking Date</TableHead>
-                     <TableHead>Req. Del. Date</TableHead>
-                     <TableHead>Cost</TableHead>
-                     <TableHead>Status</TableHead>
-                     <TableHead className="text-center">Manage</TableHead>
-                  </TableRow>
-               </TableHeader>
-
-               <TableBody>
-                  {!parcels?.length ? (
-                     <TableRow>
-                        <TableCell
-                           colSpan={7}
-                           className="text-center py-4 text-slate-500"
-                        >
-                           No parcels found.
-                        </TableCell>
-                     </TableRow>
-                  ) : (
-                     parcels.map((parcel) => (
-                        <AllParcelsRow
-                           key={parcel._id}
-                           parcel={parcel}
-                           refetch={reloadParcelData}
-                        />
-                     ))
-                  )}
-               </TableBody>
-            </Table>
-         </div>
-      </Container>
+         <DeleteModal
+            openModal={open}
+            setOpenModal={setOpen}
+            deleteConfirm={handleDeleteParcel}
+         />
+         <GiveReviewMOdal
+            openReview={openReview}
+            setOpenReview={setOpenReview}
+            deliveryManId={deliveryManId}
+         />
+      </>
    );
 };
 
-export default AllParcels;
+export default MyParcelRow;
