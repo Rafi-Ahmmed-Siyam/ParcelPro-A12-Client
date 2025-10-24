@@ -8,6 +8,7 @@ import { errorToast, successToast } from '@/Utilities/Toasts';
 import { Link } from 'react-router-dom';
 import DeleteModal from '../Modals/DeleteModal';
 import GiveReviewMOdal from '../Modals/GiveReviewMOdal';
+import { Badge } from '@/components/ui/badge';
 
 const MyParcelRow = ({ parcel, refetch }) => {
    const {
@@ -58,24 +59,26 @@ const MyParcelRow = ({ parcel, refetch }) => {
             <TableCell>{deliveryManId || 'Not Assigned'}</TableCell>
             {/* status */}
             <TableCell className={'capitalize'}>
-               <span
-                  className={`badge px-3 py-3 font-medium text-xs capitalize
-    ${
-       bookingStatus === 'Pending'
-          ? 'badge-warning'
-          : bookingStatus === 'On The Way'
-          ? 'badge-info'
-          : bookingStatus === 'Delivered'
-          ? 'badge-success'
-          : bookingStatus === 'Returned'
-          ? 'badge-secondary'
-          : bookingStatus === 'Canceled'
-          ? 'badge-error'
-          : ''
-    }`}
+               <Badge
+                  className={`
+      px-3 py-1 text-xs font-medium capitalize rounded-full
+      ${
+         bookingStatus === 'Pending'
+            ? 'bg-yellow-100 text-yellow-800'
+            : bookingStatus === 'On The Way'
+            ? 'bg-blue-100 text-blue-800'
+            : bookingStatus === 'Delivered'
+            ? 'bg-green-100 text-green-800'
+            : bookingStatus === 'Returned'
+            ? 'bg-gray-100 text-gray-800'
+            : bookingStatus === 'Canceled'
+            ? 'bg-red-100 text-red-800'
+            : 'bg-slate-100 text-slate-700'
+      }
+   `}
                >
                   {bookingStatus}
-               </span>
+               </Badge>
             </TableCell>
             {bookingStatus === 'Delivered' ? (
                <>

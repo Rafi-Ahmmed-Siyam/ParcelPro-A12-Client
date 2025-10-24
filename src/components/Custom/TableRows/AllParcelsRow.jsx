@@ -9,6 +9,7 @@ import useUserParcels from '@/hooks/Custom/useUserParcels';
 import { errorToast, successToast } from '@/Utilities/Toasts';
 import useParcel from '@/hooks/Custom/useParcel';
 import useDelivery from '@/hooks/Custom/useDelivery';
+import { Badge } from '@/components/ui/badge';
 
 const AllParcelsRow = ({ parcel }) => {
    const {
@@ -69,24 +70,26 @@ const AllParcelsRow = ({ parcel }) => {
          </TableCell>
          {/* status */}
          <TableCell className={'capitalize text-center'}>
-            <span
-               className={`badge px-3 py-3 font-medium text-xs capitalize
-    ${
-       bookingStatus === 'Pending'
-          ? 'badge-warning'
-          : bookingStatus === 'On The Way'
-          ? 'badge-info'
-          : bookingStatus === 'Delivered'
-          ? 'badge-success'
-          : bookingStatus === 'Returned'
-          ? 'badge-secondary'
-          : bookingStatus === 'Canceled'
-          ? 'badge-error'
-          : ''
-    }`}
+            <Badge
+               className={`
+      px-3 py-1 text-xs font-medium capitalize rounded-full
+      ${
+         bookingStatus === 'Pending'
+            ? 'bg-yellow-200 text-yellow-800'
+            : bookingStatus === 'On The Way'
+            ? 'bg-blue-200 text-blue-800'
+            : bookingStatus === 'Delivered'
+            ? 'bg-green-200 text-green-800'
+            : bookingStatus === 'Returned'
+            ? 'bg-gray-200 text-gray-800'
+            : bookingStatus === 'Canceled'
+            ? 'bg-red-200 text-red-800'
+            : 'bg-slate-200 text-slate-700'
+      }
+   `}
             >
                {bookingStatus}
-            </span>
+            </Badge>
          </TableCell>
          {/* Manage button */}
          <TableCell className={'text-center'}>

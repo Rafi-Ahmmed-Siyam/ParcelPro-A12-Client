@@ -8,6 +8,7 @@ import useAllUser from '@/hooks/Custom/useAllUser';
 import useRole from '@/hooks/Custom/useRole';
 import { successToast } from '@/Utilities/Toasts';
 import { MdOutlineAdminPanelSettings } from 'react-icons/md';
+import { Badge } from '@/components/ui/badge';
 
 const AllUsersRow = ({ user, reloadUsers }) => {
    const { _id, email, name, phone, role, totalCost, parcelsBooked } =
@@ -37,27 +38,29 @@ const AllUsersRow = ({ user, reloadUsers }) => {
    return (
       <TableRow>
          {/* User Name */}
-         <TableCell className={'text-center'}>{name}</TableCell>
+         <TableCell className={'text-center '}>{name}</TableCell>
          {/* User email */}
          <TableCell className={'text-center'}>{email}</TableCell>
          {/* Sender Phone */}
          <TableCell className={'text-center'}>{phone || 'N/A'}</TableCell>
          {/* Role */}
          <TableCell className={'text-center'}>
-            <span
-               className={`badge px-3 py-3 font-medium text-xs capitalize
+            <Badge
+               className={`
+            px-3 py-1 text-xs font-medium capitalize rounded-full
             ${
                role === 'Admin'
-                  ? 'badge-error'
+                  ? 'bg-red-200 text-red-800'
                   : role === 'DeliveryMen'
-                  ? 'badge-success'
+                  ? 'bg-green-200 text-green-800'
                   : role === 'User'
-                  ? 'badge-info'
-                  : ''
-            }`}
+                  ? 'bg-blue-200 text-blue-800'
+                  : 'bg-slate-200 text-slate-700'
+            }
+         `}
             >
                {role}
-            </span>
+            </Badge>
          </TableCell>
          {/*Parcel Booked */}
          <TableCell className={'text-center'}>

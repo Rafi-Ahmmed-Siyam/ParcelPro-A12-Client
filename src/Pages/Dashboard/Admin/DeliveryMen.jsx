@@ -15,8 +15,8 @@ import React from 'react';
 const DeliveryMen = () => {
    const { deliveryMen, reloadDeliveryMen, isLoading, isPending } =
       useDeliveryMen();
-   console.log(deliveryMen);
-
+   
+   if ((isLoading, isPending)) return <LoadingSpinner />;
    return (
       <Container>
          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
@@ -30,6 +30,7 @@ const DeliveryMen = () => {
                   <TableRow>
                      <TableHead className={'text-center'}>Image</TableHead>
                      <TableHead className={'text-center'}> Name</TableHead>
+                     <TableHead className={'text-center'}> Email</TableHead>
                      <TableHead className={'text-center'}>
                         Phone Number
                      </TableHead>

@@ -1,7 +1,9 @@
 import { TableCell, TableRow } from '@/components/ui/table';
+import { Rating } from '@smastrom/react-rating';
 
 const AllDeliveryMenRow = ({ deliveryMan }) => {
-   const { _id, image, role, name, phone } = deliveryMan || {};
+   const { _id, image, name, email, phone, averageRating, deliveredCount } =
+      deliveryMan || {};
    return (
       <TableRow>
          {/* Delivery Man's Name */}
@@ -17,14 +19,30 @@ const AllDeliveryMenRow = ({ deliveryMan }) => {
          </TableCell>
          {/* Delivery Man's Name */}
          <TableCell>{name || 'Not found'}</TableCell>
+         {/* Delivery Man's email */}
+         <TableCell>{email || 'Not found'}</TableCell>
          {/* Phone Number */}
          <TableCell>{phone || 'N/A'}</TableCell>
          {/*Number of parcels delivered
           */}
-         <TableCell>Number of parcels delivered</TableCell>
+         <TableCell>{deliveredCount}</TableCell>
          {/* Average review
           */}
-         <TableCell>Average review</TableCell>
+         <TableCell>
+            <div className="flex justify-center gap-2 items-center">
+               {/* Star Rating */}
+               <Rating
+                  style={{ maxWidth: 80 }}
+                  value={averageRating}
+                  readOnly
+               />
+
+               {/* Text beside stars */}
+               <span className="text-sm font-medium text-slate-700">
+                  {averageRating ? averageRating.toFixed(1) : 'No reviews'}
+               </span>
+            </div>
+         </TableCell>
       </TableRow>
    );
 };
