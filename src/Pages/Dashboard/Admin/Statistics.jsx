@@ -24,6 +24,7 @@ const Statistics = () => {
       totalDelivered,
       bookingPerDate,
       bookedVsDelivery,
+      totalRevenue,
    } = adminStats || {};
    return (
       <Container>
@@ -44,7 +45,7 @@ const Statistics = () => {
                <div>
                   <p className="text-slate-500 text-sm">Total Revenue</p>
                   <h2 className="text-3xl font-semibold text-slate-800 mt-1">
-                     ৳0
+                     ৳{totalRevenue || 0}
                   </h2>
                </div>
                <div className="bg-green-100 p-4 rounded-full">

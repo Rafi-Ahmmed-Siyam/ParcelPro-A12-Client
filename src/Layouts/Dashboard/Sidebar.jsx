@@ -7,6 +7,7 @@ import {
    Boxes,
    ChartNoAxesCombined,
    ClipboardList,
+   History,
    LogOut,
    NotebookPen,
    Package,
@@ -65,6 +66,14 @@ const Sidebar = () => {
          <li>
             <NavLink to={'/dashboard/bookParcel'} className={getActiveClass}>
                <NotebookPen className="size-5" /> <span>Book a Parcel</span>
+            </NavLink>
+         </li>
+         <li>
+            <NavLink
+               to={'/dashboard/paymentHistory'}
+               className={getActiveClass}
+            >
+               <History className="size-5" /> <span>Payment History</span>
             </NavLink>
          </li>
       </>

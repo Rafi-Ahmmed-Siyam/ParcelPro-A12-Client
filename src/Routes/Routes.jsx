@@ -19,6 +19,7 @@ import DeliveryList from '@/Pages/Dashboard/DeliveryMen/DeliveryList';
 import MyReviews from '@/Pages/Dashboard/DeliveryMen/MyReviews';
 import DeliveryMenRoute from './DeliveryMenRoute';
 import CheckOut from '@/Pages/Dashboard/User/CheckOut';
+import PaymentHistory from '@/Pages/Dashboard/User/PaymentHistory';
 
 const router = createBrowserRouter([
    {
@@ -85,10 +86,18 @@ const router = createBrowserRouter([
             ),
          },
          {
-            path: 'checkout',
+            path: 'checkout/:id',
             element: (
                <PrivetRoute>
                   <CheckOut />
+               </PrivetRoute>
+            ),
+         },
+         {
+            path: 'paymentHistory',
+            element: (
+               <PrivetRoute>
+                 <PaymentHistory/>
                </PrivetRoute>
             ),
          },

@@ -99,7 +99,7 @@ const NavbarHome = () => {
                               role="button"
                               className="btn btn-ghost btn-circle avatar"
                            >
-                              <div className="w-10 rounded-full border-2 ">
+                              <div className="w-12 rounded-full border-2 ">
                                  <img
                                     referrerPolicy="no-referrer"
                                     alt="user image"
@@ -112,7 +112,7 @@ const NavbarHome = () => {
                            </div>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent
-                           className="w-52 "
+                           className="w-56 "
                            align="end"
                            sideOffset={4}
                         >

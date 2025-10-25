@@ -20,6 +20,7 @@ const MyParcelRow = ({ parcel, refetch }) => {
       deliveryManId,
       createdAt,
       approxDeliveryDate,
+      isPaid,
    } = parcel || {};
    const axiosSecure = useAxiosSecure();
    const [open, setOpen] = useState(false);
@@ -93,15 +94,21 @@ const MyParcelRow = ({ parcel, refetch }) => {
                      </Button>
                   </TableCell>
                   <TableCell>
-                     <Button
-                        size="sm"
-                        variant="default"
-                        className={
-                           'bg-green-500 text-white px-5 hover:bg-green-600'
-                        }
-                     >
-                        <Link to={'/dashboard/checkout'}>Pay</Link>
-                     </Button>
+                     {isPaid ? (
+                        <Badge className="bg-green-100 text-green-800 px-3 py-1 text-sm font-semibold rounded-full uppercase tracking-wider shadow-sm">
+                           Paid
+                        </Badge>
+                     ) : (
+                        <Button
+                           size="sm"
+                           variant="default"
+                           className={
+                              'bg-green-500 text-white px-5 hover:bg-green-600'
+                           }
+                        >
+                           <Link to={`/dashboard/checkout/${_id}`}>Pay</Link>
+                        </Button>
+                     )}
                   </TableCell>
                </>
             ) : (
@@ -115,7 +122,8 @@ const MyParcelRow = ({ parcel, refetch }) => {
                         }
                         disabled={
                            bookingStatus === 'On The Way' ||
-                           bookingStatus === 'Delivered'
+                           bookingStatus === 'Delivered' ||
+                           bookingStatus === 'Canceled'
                         }
                      >
                         <Link to={`/dashboard/updateParcel/${_id}`}>
