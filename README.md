@@ -1,16 +1,63 @@
-# React + Vite
+# ParcelPro - Parcel Management System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**ParcelPro** is a modern Parcel Management System built with the MERN stack, designed to make parcel booking, delivery assignment, and parcel tracking smooth and efficient.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🌟 Project Overview
+ParcelPro allows users to book parcels, track deliveries, and manage their bookings. Delivery personnel can manage assigned deliveries, while admins have complete control over users, delivery men, and all parcel data.
 
-## React Compiler
+**Key Points:**
+- Parcel booking and management system  
+- Real-time delivery assignment and status updates  
+- Admin, User, and Delivery Men dashboards with role-based access  
+- Responsive design for mobile, tablet, and desktop  
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 🛠️ Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Client (Frontend)
+- React.js  
+- Tailwind CSS + DaisyUI  
+- Shadcn component library  
+- React Router v6  
+- Firebase Authentication (Gmail & email/password)  
+- TanStack Query for data fetching  
+- Stripe for payment integration  
+
+### Server (Backend)
+- Node.js + Express.js  
+- MongoDB (Atlas)  
+- JWT authentication for private routes  
+
+---
+
+## ⚡ Features / Functionalities
+1. Role-based dashboards: Admin, DeliveryMen, User  
+2. Parcel booking system with automatic price calculation  
+3. Track parcels by status: Pending, On the Way, Delivered, Cancelled  
+4. Admin can assign delivery personnel to parcels  
+5. Delivery Men can mark parcels as delivered or cancelled  
+6. Responsive design for all devices  
+7. Sweet alerts / toast notifications for CRUD operations and authentication  
+8. Real-time statistics: Total parcels booked, delivered, and registered users  
+9. Login & Registration with Firebase + optional social login  
+10. Stripe payment integration for parcel checkout  
+
+---
+
+## 🔗 Live Demo
+[ParcelPro Live Site](YOUR_LIVE_LINK_HERE)
+
+---
+
+## 👨‍💻 Admin Credentials
+- **Username:** admin@gmail.com  
+- **Password:** 246810 
+
+---
+
+## 🔧 Author
+**Rafi Ahmmed**  
+

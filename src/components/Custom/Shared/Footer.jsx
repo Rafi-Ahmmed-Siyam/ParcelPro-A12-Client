@@ -32,10 +32,10 @@ const Footer = () => {
                </h3>
                <ul className="space-y-2 text-sm text-center lg:text-start">
                   <li>
-                     <NavLink className="hover:text-amber-400">Home</NavLink>
+                     <NavLink to={'/'} className="hover:text-amber-400">Home</NavLink>
                   </li>
                   <li>
-                     <NavLink className="hover:text-amber-400">
+                     <NavLink  className="hover:text-amber-400">
                         Dashboard
                      </NavLink>
                   </li>
