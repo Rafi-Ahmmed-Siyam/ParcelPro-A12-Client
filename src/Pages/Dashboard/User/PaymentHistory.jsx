@@ -29,7 +29,7 @@ const PaymentHistory = () => {
       },
       enabled: !!user.email,
    });
-   console.log(payments);
+   
    return (
       <Container>
          <h1 className="text-2xl md:text-3xl font-bold text-slate-900">

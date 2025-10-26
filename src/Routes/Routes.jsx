@@ -3,7 +3,6 @@ import HomeLayout from '@/Layouts/HomeLayout';
 import Login from '@/Pages/Authentication/Login';
 import Signup from '@/Pages/Authentication/Signup';
 import HomePage from '@/Pages/HomePage';
-import Order from '@/Pages/Order';
 import { createBrowserRouter } from 'react-router-dom';
 import PrivetRoute from './PrivetRoute';
 import BookParcel from '@/Pages/Dashboard/User/BookParcel';
@@ -29,14 +28,6 @@ const router = createBrowserRouter([
          {
             index: true,
             element: <HomePage />,
-         },
-         {
-            path: 'order',
-            element: (
-               <PrivetRoute>
-                  <Order />
-               </PrivetRoute>
-            ),
          },
       ],
    },
@@ -97,7 +88,7 @@ const router = createBrowserRouter([
             path: 'paymentHistory',
             element: (
                <PrivetRoute>
-                 <PaymentHistory/>
+                  <PaymentHistory />
                </PrivetRoute>
             ),
          },

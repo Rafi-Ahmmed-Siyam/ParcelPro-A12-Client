@@ -26,7 +26,7 @@ const DashboardLayout = () => {
 
             {/* Main dashboard area */}
             <section className="flex-1  bg-base-100 p-0 lg:p-5 ">
-               <article className="min-h-[calc(100vh-40px)]  border rounded-none lg:rounded-sm bg-[#F8F8F8]">
+               <article className="min-h-[calc(100vh-40px)]  border rounded-none lg:rounded-sm bg-white">
                   <Outlet />
                </article>
             </section>

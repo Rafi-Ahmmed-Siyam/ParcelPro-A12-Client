@@ -1,10 +1,4 @@
-import {
-   Field,
-   FieldGroup,
-   FieldLabel,
-   FieldDescription,
-   FieldSeparator,
-} from '@/components/ui/field';
+import { Field, FieldLabel, FieldDescription } from '@/components/ui/field';
 import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -15,7 +9,7 @@ import { useForm } from 'react-hook-form';
 import GoogleSignInButton from './GoogleSignInButton';
 import useAuth from '@/hooks/Custom/useAuth';
 import { LiaSpinnerSolid } from 'react-icons/lia';
-import { successToast } from '@/Utilities/Toasts';
+import { errorToast, successToast } from '@/Utilities/Toasts';
 
 const Login = () => {
    const [showPassword, setShowPassword] = useState(false);
@@ -37,7 +31,7 @@ const Login = () => {
          successToast('Login Successful!');
          navigate(from, { replace: true });
       } catch (err) {
-         console.log(err);
+         errorToast(err.message);
       }
    };
 

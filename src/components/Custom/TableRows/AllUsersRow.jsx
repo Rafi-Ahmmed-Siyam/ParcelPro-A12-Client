@@ -4,10 +4,8 @@ import React, { useState } from 'react';
 import { TbCurrencyTaka } from 'react-icons/tb';
 import ConfirmModal from '../Modals/ConfirmModal';
 import useAxiosSecure from '@/hooks/Custom/useAxiosSecure';
-import useAllUser from '@/hooks/Custom/useAllUser';
 import useRole from '@/hooks/Custom/useRole';
 import { successToast } from '@/Utilities/Toasts';
-import { MdOutlineAdminPanelSettings } from 'react-icons/md';
 import { Badge } from '@/components/ui/badge';
 
 const AllUsersRow = ({ user, reloadUsers }) => {
@@ -32,7 +30,8 @@ const AllUsersRow = ({ user, reloadUsers }) => {
             setOpenModal(false);
          }
       } catch (err) {
-         console.log(err);
+         // console.log(err)
+         console.log(err.message || 'Something went wrong!');
       }
    };
    return (

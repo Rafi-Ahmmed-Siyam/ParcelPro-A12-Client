@@ -10,16 +10,20 @@ import {
 } from '../../ui/dropdown-menu';
 import { Bell, LogOut } from 'lucide-react';
 import navIcon from '../../../assets/icons/express-delivery.png';
-
 import { Button } from '../../ui/button';
 import useAuth from '@/hooks/Custom/useAuth';
 import { MdOutlineSpaceDashboard } from 'react-icons/md';
 import useRole from '@/hooks/Custom/useRole';
 
+
 const NavbarHome = () => {
    const { user, logOut } = useAuth();
    const { role } = useRole();
-   // console.log(user);
+
+   const getActiveClass = (isActive) =>
+      isActive
+         ? 'text-amber-300 text-base font-semibold' 
+         : 'text-white text-base font-normal'; 
 
    const userLink = (
       <>
@@ -68,7 +72,7 @@ const NavbarHome = () => {
       </>
    );
    return (
-      <nav className="px-1.5 md:px-3 lg:px-4 py-3  bg-teal-600 shadow-md ">
+      <nav className="px-1.5 md:px-3 lg:px-4 py-3  bg-teal-600 dark:bg-slate-900 shadow-md ">
          <div className="flex justify-between items-center ">
             <Link to={'/'} className="flex justify-start items-center gap-1">
                <img className="w-11" src={navIcon} alt="navIcon" />
@@ -79,12 +83,13 @@ const NavbarHome = () => {
 
             <ul className="list-none flex justify-end items-center gap-4 md:gap-5 lg:gap-5 text-white">
                <li>
-                  <NavLink className="hover:text-gray-200 transition-colors">
+                  <NavLink to={'/'} className={getActiveClass}>
                      Home
                   </NavLink>
                </li>
+
                <li className="relative">
-                  <NavLink to={'/order'} className="hover:text-gray-200">
+                  <NavLink className="hover:text-gray-200">
                      <Bell className="w-5 h-5" />
                      <span className="absolute -top-1 -right-0.5 h-2.5 w-2.5 rounded-full bg-red-600"></span>
                   </NavLink>

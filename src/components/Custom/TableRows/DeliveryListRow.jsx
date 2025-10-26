@@ -2,7 +2,6 @@ import { Button } from '@/components/ui/button';
 import { TableCell, TableRow } from '@/components/ui/table';
 import { formateDate } from '@/Utilities/dateFormater';
 import React, { useState } from 'react';
-import { TbCurrencyTaka } from 'react-icons/tb';
 import ConfirmModal from '../Modals/ConfirmModal';
 import useAxiosSecure from '@/hooks/Custom/useAxiosSecure';
 import useUserParcels from '@/hooks/Custom/useUserParcels';
@@ -46,7 +45,8 @@ const DeliveryListRow = ({ delivery, reloadDeliveries }) => {
             successToast('Delivery Status Updated Successful');
          }
       } catch (err) {
-         console.log(err);
+         // console.log(err)
+         console.log(err.message || 'Something went Wrong!');
       }
    };
 

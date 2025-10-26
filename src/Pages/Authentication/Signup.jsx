@@ -2,12 +2,7 @@ import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import {
-   Field,
-   FieldLabel,
-   FieldDescription,
-   FieldSeparator,
-} from '@/components/ui/field';
+import { Field, FieldLabel, FieldDescription } from '@/components/ui/field';
 import { Eye, EyeOff } from 'lucide-react';
 import { LiaSpinnerSolid } from 'react-icons/lia';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -28,7 +23,7 @@ import { uploadImage } from '@/API/utils';
 import GoogleSignInButton from './GoogleSignInButton';
 import useAxiosPublic from '@/hooks/Custom/useAxiosPublic';
 import useLoading from '@/hooks/Custom/useLoading';
-import { successToast } from '@/Utilities/Toasts';
+import { errorToast, successToast } from '@/Utilities/Toasts';
 
 const Signup = () => {
    const [showPassword, setShowPassword] = useState(false);
@@ -42,7 +37,6 @@ const Signup = () => {
       register,
       handleSubmit,
       reset,
-      setValue,
       formState: { errors },
    } = useForm();
    console.log(role);
@@ -77,7 +71,7 @@ const Signup = () => {
             reset();
          }
       } catch (err) {
-         console.log(err);
+         errorToast(err.message || 'Something went wrong!');
       } finally {
          setReqLoading(false);
       }

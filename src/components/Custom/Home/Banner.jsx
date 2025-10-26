@@ -1,6 +1,5 @@
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import React from 'react';
-import bannerImage from '../../../assets/Banner/banner-cal.jpg';
 
 const Banner = () => {
    return (

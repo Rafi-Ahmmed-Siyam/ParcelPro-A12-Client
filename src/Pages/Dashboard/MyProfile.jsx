@@ -25,6 +25,10 @@ import { Input } from '@/components/ui/input';
 import { formateDate } from '@/Utilities/dateFormater';
 import { uploadImage } from '@/API/utils';
 import useRole from '@/hooks/Custom/useRole';
+import useAxiosSecure from '@/hooks/Custom/useAxiosSecure';
+import useLoading from '@/hooks/Custom/useLoading';
+import LoadingSpinner from '@/components/LoadingSpinner';
+import { successToast } from '@/Utilities/Toasts';
 
 const MyProfile = () => {
    const { user, updateUserProfile, setLoading } = useAuth();
@@ -33,6 +37,8 @@ const MyProfile = () => {
    const [previewImage, setPreviewImage] = useState(null);
    const [selectedFile, setSelectedFile] = useState(null);
    const { role } = useRole();
+   const axiosSecure = useAxiosSecure();
+   const { reqLoading, setReqLoading } = useLoading();
 
    const handleImageChange = async (e) => {
       const file = e.target.files[0];
@@ -50,19 +56,38 @@ const MyProfile = () => {
          alert('Please select a new picture first.');
          return;
       }
-
+      setReqLoading(true);
       console.log(user.displayName);
       const imgUrl = await uploadImage(selectedFile);
       console.log(imgUrl);
-      await updateUserProfile(user.displayName, imgUrl);
-      setIsModalOpen(false);
-      setInterval(setLoading(false), 500);
+
+      try {
+         await updateUserProfile(user.displayName, imgUrl);
+         // Send patch req in db
+         const { data } = await axiosSecure.patch('/users/pro-pic', {
+            id: role.id,
+            img: imgUrl,
+         });
+         //   console.log(data)
+         if (data.modifiedCount > 0) {
+            successToast('Your Profile Picture is successfully updated!');
+         }
+      } catch (err) {
+         // console.log(err)
+         console.log(err.message || 'Something went Wrong!');
+      } finally {
+         setIsModalOpen(false);
+         setInterval(setLoading(false), 500);
+         setLoading(false);
+      }
    };
+
+   if (reqLoading) return <LoadingSpinner />;
 
    return (
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
          <div className="p-6 md:p-10 w-full ">
-            <Card className="shadow-none border-none max-w-6xl mx-auto bg-[#F8F8F8]">
+            <Card className="shadow-none border-none max-w-6xl mx-auto bg-white">
                <CardHeader className="border-b px-0 py-4">
                   <CardTitle className="text-3xl font-bold tracking-tight">
                      My Profile
@@ -84,9 +109,20 @@ const MyProfile = () => {
                         </Avatar>
 
                         <Badge
-                           className="absolute bottom-0 right-0 transform translate-x-1/4 translate-y-1/4 
-                                               text-xs font-semibold px-3 py-1 bg-primary text-primary-foreground 
-                                               border-2 border-white shadow-md z-10"
+                           className={`absolute bottom-0 right-0 transform translate-x-1/4 translate-y-1/4 
+                              text-xs font-semibold px-3 py-1 text-primary-foreground border-2 border-white 
+                              rounded-full shadow-md z-10
+                              ${
+                                 role === 'Admin'
+                                    ? 'bg-red-200 text-red-800'
+                                    : role === 'DeliveryMen'
+                                    ? 'bg-green-200 text-green-800'
+                                    : role === 'User'
+                                    ? 'bg-blue-200 text-blue-800'
+                                    : 'bg-slate-200 text-slate-700'
+                              }
+
+                           `}
                            variant="default"
                         >
                            {role.role || 'User'}
@@ -98,8 +134,7 @@ const MyProfile = () => {
                            <Button
                               onClick={() => setIsModalOpen(true)}
                               size="sm"
-                              variant="outline"
-                              className="font-semibold"
+                              className="rounded-sm font-semibold bg-blue-400 hover:bg-blue-300"
                            >
                               Upload Profile Picture
                            </Button>
@@ -111,7 +146,7 @@ const MyProfile = () => {
                      )}
 
                      {isGoogleUser && (
-                        <p className="text-sm text-gray-500 mt-2 text-center max-w-[160px]">
+                        <p className="text-sm text-gray-500 mt-2 text-center max-w-40">
                            Profile picture managed by Google.
                         </p>
                      )}

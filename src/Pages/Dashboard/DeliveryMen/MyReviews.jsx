@@ -27,7 +27,7 @@ const MyReviews = () => {
    if (isLoading || isPending) return <LoadingSpinner />;
    return (
       <Container className="py-8">
-         {/* Page Header */}
+         {/* Header */}
          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8 border-b pb-3">
             <h1 className="text-2xl md:text-3xl font-bold text-slate-900">
                My Reviews
@@ -35,14 +35,14 @@ const MyReviews = () => {
             <p className="text-lg text-slate-500 font-medium">
                Total Reviews:{' '}
                <span className="text-slate-900 font-bold">
-                  {reviews.length}
+                  {reviews?.length}
                </span>
             </p>
          </div>
 
-         {/* Review Cards Grid */}
+         {/* Card */}
          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {reviews.length === 0 ? (
+            {reviews?.length === 0 ? (
                <div className="col-span-full py-16 text-center bg-slate-50 border border-slate-200 rounded-lg">
                   <p className="text-xl font-medium text-slate-500">
                      No reviews have been submitted for you yet.
@@ -52,12 +52,12 @@ const MyReviews = () => {
                   </p>
                </div>
             ) : (
-               reviews.map((review) => (
+               reviews?.map((review) => (
                   <div
                      key={review._id}
                      className="bg-white border border-slate-200 rounded-xl p-5 shadow-lg hover:shadow-xl transition duration-300 flex flex-col h-full"
                   >
-                     {/* Review Giver Info */}
+                     
                      <div className="flex items-center border-b pb-4 mb-4">
                         <img
                            src={review.userImg}
@@ -74,8 +74,8 @@ const MyReviews = () => {
                         </div>
                      </div>
 
-                     {/* Rating and Feedback */}
-                     <div className="flex-grow space-y-3">
+                     {/* rating and feedback */}
+                     <div className="grow space-y-3">
                         <div className="flex justify-between items-center">
                            <h4 className="text-sm font-semibold text-slate-700">
                               Service Rating:
@@ -92,7 +92,7 @@ const MyReviews = () => {
                         </p>
                      </div>
 
-                     {/* Footer */}
+                    
                      <div className="pt-4 mt-4 border-t border-slate-100 text-right">
                         <span className="text-xs text-slate-400">
                            Parcel Delivery Agent Feedback

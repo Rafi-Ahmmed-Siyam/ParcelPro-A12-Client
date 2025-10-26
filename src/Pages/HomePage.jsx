@@ -5,10 +5,10 @@ import React from 'react';
 
 const HomePage = () => {
    return (
-      <div>
+      <div className="bg-[#F0FDFA]">
          <Banner />
          <Features />
-         <TopDeliveryMen/>
+         <TopDeliveryMen />
       </div>
    );
 };

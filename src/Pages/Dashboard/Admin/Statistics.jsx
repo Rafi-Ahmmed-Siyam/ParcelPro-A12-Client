@@ -6,11 +6,16 @@ import useAxiosSecure from '@/hooks/Custom/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
 import BarChart from './Charts/BarChart';
 import LineChart from './Charts/LineChart';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 const Statistics = () => {
    const axiosSecure = useAxiosSecure();
    // get stats data
-   const { data: adminStats = [] } = useQuery({
+   const {
+      data: adminStats = [],
+      isLoading,
+      isPending,
+   } = useQuery({
       queryKey: ['adminStats'],
       queryFn: async () => {
          const { data } = await axiosSecure.get('/admin/stats');
@@ -26,6 +31,8 @@ const Statistics = () => {
       bookedVsDelivery,
       totalRevenue,
    } = adminStats || {};
+
+   if (isLoading || isPending) return <LoadingSpinner />;
    return (
       <Container>
          {/* Header */}
@@ -93,9 +100,8 @@ const Statistics = () => {
             </div>
          </div>
 
-         {/* Charts */}
          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Bar Chart Placeholder */}
+            {/* Bar Chart */}
             <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-6">
                <h3 className="text-lg font-semibold text-slate-700 mb-4">
                   Bookings by Date
@@ -105,7 +111,7 @@ const Statistics = () => {
                </div>
             </div>
 
-            {/* Line Chart Placeholder */}
+            {/* Line Chart  */}
             <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-6">
                <h3 className="text-lg font-semibold text-slate-700 mb-4">
                   Booked vs Delivered

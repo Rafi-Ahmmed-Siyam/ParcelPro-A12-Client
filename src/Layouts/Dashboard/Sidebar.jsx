@@ -25,8 +25,8 @@ const Sidebar = () => {
       `rounded-sm font-medium text-base px-2.5 py-1.5 flex items-center gap-1 mb-1.5 transition-colors duration-200 
       ${
          isActive
-            ? 'bg-blue-400 text-white '
-            : 'hover:bg-blue-100 text-slate-700'
+            ? 'bg-blue-100 text-blue-700 '
+            : 'hover:bg-blue-100 text-gray-700'
       }`;
 
    const adminLinks = (
@@ -105,8 +105,8 @@ const Sidebar = () => {
             className="drawer-overlay"
          ></label>
 
-         <nav className="menu bg-base-200 text-base-content min-h-full w-72 flex flex-col justify-between p-4">
-            {/* ---------- Sidebar Header / Logo ---------- */}
+         <nav className="menu bg-gray-50 text-base-content min-h-full w-72 flex flex-col justify-between p-4">
+            
             <Link
                to={'/'}
                className="flex justify-center items-center gap-1 border rounded-sm shadow-sm"
@@ -124,7 +124,7 @@ const Sidebar = () => {
                {role.role === 'DeliveryMen' && DeliveryMenLinks}
             </ul>
 
-            {/* ---------- Bottom Section ---------- */}
+            
             <div className="border-t pt-4 space-y-1">
                <NavLink to={'/dashboard/profile'} className={getActiveClass}>
                   <CgProfile className="size-5" /> <span>My Profile</span>
@@ -133,7 +133,7 @@ const Sidebar = () => {
                <Button
                   onClick={() => logOut()}
                   variant="ghost"
-                  className="w-full cursor-pointer mt-1 justify-start hover:bg-blue-100 text-base font-normal hover:text-red-600 text-red-500"
+                  className="w-full cursor-pointer mt-1 justify-start hover:bg-blue-100 text-base font-normal hover:text-red-500 text-red-600"
                >
                   <LogOut className="size-5" /> Logout
                </Button>

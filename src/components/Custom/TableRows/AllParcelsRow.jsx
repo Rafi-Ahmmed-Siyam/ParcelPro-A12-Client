@@ -85,8 +85,8 @@ const AllParcelsRow = ({ parcel }) => {
             : bookingStatus === 'Canceled'
             ? 'bg-red-200 text-red-800'
             : 'bg-slate-200 text-slate-700'
-      }
-   `}
+         }
+      `}
             >
                {bookingStatus}
             </Badge>
