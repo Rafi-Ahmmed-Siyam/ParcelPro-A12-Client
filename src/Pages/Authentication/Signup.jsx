@@ -39,7 +39,7 @@ const Signup = () => {
       reset,
       formState: { errors },
    } = useForm();
-   console.log(role);
+   // console.log(role);
    const from = location?.state?.from?.pathname || '/';
 
    const handleSignup = async (data) => {
@@ -50,7 +50,7 @@ const Signup = () => {
       if (image && image?.length > 0) {
          const img = await uploadImage(image);
          imageUrl = img;
-         console.log(img);
+         // console.log(img);
       }
 
       try {
@@ -64,7 +64,7 @@ const Signup = () => {
             phone,
             createdAt: new Date(),
          });
-         console.log(data);
+         // console.log(data);
          if (data?.insertedId) {
             navigate(from, { replace: true });
             successToast('Sign Up Successful!');

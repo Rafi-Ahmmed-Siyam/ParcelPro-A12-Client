@@ -19,11 +19,13 @@ import MyReviews from '@/Pages/Dashboard/DeliveryMen/MyReviews';
 import DeliveryMenRoute from './DeliveryMenRoute';
 import CheckOut from '@/Pages/Dashboard/User/CheckOut';
 import PaymentHistory from '@/Pages/Dashboard/User/PaymentHistory';
+import ErrorPage from '@/Pages/ErrorPage';
 
 const router = createBrowserRouter([
    {
       path: '/',
       element: <HomeLayout />,
+      errorElement: <ErrorPage />,
       children: [
          {
             index: true,

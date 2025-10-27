@@ -20,7 +20,7 @@ const TopDeliveryMen = () => {
       },
    });
 
-   console.log(topDeliveryMen);
+   // console.log(topDeliveryMen);
    if (isLoading || isPending) return <LoadingSpinner />;
 
    return (

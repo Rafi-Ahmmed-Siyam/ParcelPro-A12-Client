@@ -1,5 +1,4 @@
 import React from 'react';
-import navIcon from '../../assets/Icons/express-delivery.png';
 import { Link, NavLink } from 'react-router-dom';
 import { CgProfile } from 'react-icons/cg';
 import {
@@ -17,6 +16,7 @@ import { Button } from '@/components/ui/button';
 import { TbUsersGroup } from 'react-icons/tb';
 import useRole from '@/hooks/Custom/useRole';
 import { MdOutlineReviews } from 'react-icons/md';
+import navIcon from '../../assets/Icons/expressDelivery.png';
 
 const Sidebar = () => {
    const { user, logOut } = useAuth();
@@ -106,7 +106,6 @@ const Sidebar = () => {
          ></label>
 
          <nav className="menu bg-gray-50 text-base-content min-h-full w-72 flex flex-col justify-between p-4">
-            
             <Link
                to={'/'}
                className="flex justify-center items-center gap-1 border rounded-sm shadow-sm"
@@ -124,7 +123,6 @@ const Sidebar = () => {
                {role.role === 'DeliveryMen' && DeliveryMenLinks}
             </ul>
 
-            
             <div className="border-t pt-4 space-y-1">
                <NavLink to={'/dashboard/profile'} className={getActiveClass}>
                   <CgProfile className="size-5" /> <span>My Profile</span>

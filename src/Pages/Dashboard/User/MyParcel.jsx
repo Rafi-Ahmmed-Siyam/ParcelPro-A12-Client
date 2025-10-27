@@ -11,18 +11,25 @@ import {
 import {
    Table,
    TableBody,
-   TableCell,
    TableHead,
    TableHeader,
    TableRow,
 } from '@/components/ui/table';
+import useRole from '@/hooks/Custom/useRole';
 import useUserParcels from '@/hooks/Custom/useUserParcels';
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const MyParcel = () => {
+   const navigate = useNavigate();
+   const { role } = useRole();
    const [status, setStatus] = useState('all');
    const [userParcels, refetch, isLoading, isPending] = useUserParcels(status);
-   // console.log(userParcels);
+
+   // If any user or admin enter this page
+   if (role.role === 'Admin') return navigate('/dashboard/statistics');
+   if (role.role === 'DeliveryMen')
+      return navigate('/dashboard/myDeliveryList');
    if (isLoading || isPending) return <LoadingSpinner />;
    return (
       <Container>
@@ -69,8 +76,6 @@ const MyParcel = () => {
                   </TableRow>
                </TableHeader>
                <TableBody>
-                  
-
                   {!userParcels?.length ? (
                      <TableRow>
                         <td

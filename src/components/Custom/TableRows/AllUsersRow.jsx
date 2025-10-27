@@ -5,7 +5,7 @@ import { TbCurrencyTaka } from 'react-icons/tb';
 import ConfirmModal from '../Modals/ConfirmModal';
 import useAxiosSecure from '@/hooks/Custom/useAxiosSecure';
 import useRole from '@/hooks/Custom/useRole';
-import { successToast } from '@/Utilities/Toasts';
+import { errorToast, successToast } from '@/Utilities/Toasts';
 import { Badge } from '@/components/ui/badge';
 
 const AllUsersRow = ({ user, reloadUsers }) => {
@@ -31,7 +31,7 @@ const AllUsersRow = ({ user, reloadUsers }) => {
          }
       } catch (err) {
          // console.log(err)
-         console.log(err.message || 'Something went wrong!');
+         errorToast(err.message || 'Something went wrong!');
       }
    };
    return (

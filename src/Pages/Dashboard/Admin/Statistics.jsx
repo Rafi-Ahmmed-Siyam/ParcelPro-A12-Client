@@ -22,7 +22,7 @@ const Statistics = () => {
          return data;
       },
    });
-   console.log(adminStats);
+   // console.log(adminStats);
    const {
       totalUsers,
       totalParcels,

@@ -46,12 +46,12 @@ const GiveReviewModal = ({ openReview, setOpenReview, deliveryManId }) => {
          deliveryMenId: _id,
          createdAt: new Date(),
       };
-      console.log(feedbackData);
+      // console.log(feedbackData);
       // send post req in DB
       try {
          // post req
          const { data } = await axiosSecure.post('/reviews', feedbackData);
-         console.log(data);
+         // console.log(data);
          if (data.insertedId) {
             setFeedbackMessage('');
             setRating(0);
@@ -59,8 +59,8 @@ const GiveReviewModal = ({ openReview, setOpenReview, deliveryManId }) => {
             setOpenReview(false);
          }
       } catch (err) {
-         console.log(err);
-         errorToast('Something went wrong');
+         // console.log(err);
+         errorToast(err.message || 'Something went wrong');
       }
    };
 

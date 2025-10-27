@@ -6,13 +6,13 @@ import ConfirmModal from '../Modals/ConfirmModal';
 import useAxiosSecure from '@/hooks/Custom/useAxiosSecure';
 import useUserParcels from '@/hooks/Custom/useUserParcels';
 import useParcel from '@/hooks/Custom/useParcel';
-import { successToast } from '@/Utilities/Toasts';
+import { errorToast, successToast } from '@/Utilities/Toasts';
 import useRole from '@/hooks/Custom/useRole';
 
 const DeliveryListRow = ({ delivery, reloadDeliveries }) => {
    const axiosSecure = useAxiosSecure();
    const { role } = useRole();
-   console.log(role)
+   // console.log(role)
    const {
       _id,
       deliveryDate,
@@ -36,7 +36,7 @@ const DeliveryListRow = ({ delivery, reloadDeliveries }) => {
             status,
             deliveryMenId: role.id,
          });
-         console.log(data);
+         // console.log(data);
          if (data?.modifiedCount > 0) {
             refetch();
             reloadParcelData();
@@ -46,7 +46,7 @@ const DeliveryListRow = ({ delivery, reloadDeliveries }) => {
          }
       } catch (err) {
          // console.log(err)
-         console.log(err.message || 'Something went Wrong!');
+         errorToast(err.message || 'Something went Wrong!');
       }
    };
 

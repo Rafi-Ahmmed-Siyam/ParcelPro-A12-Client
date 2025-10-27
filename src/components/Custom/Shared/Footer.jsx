@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import brandIcon from '../../../assets/icons/express-delivery.png';
+import brandIcon from '../../../assets/Icons/expressDelivery.png';
 import { Facebook, Instagram, Twitter } from 'lucide-react';
 
 const Footer = () => {
@@ -32,10 +32,12 @@ const Footer = () => {
                </h3>
                <ul className="space-y-2 text-sm text-center lg:text-start">
                   <li>
-                     <NavLink to={'/'} className="hover:text-amber-400">Home</NavLink>
+                     <NavLink to={'/'} className="hover:text-amber-400">
+                        Home
+                     </NavLink>
                   </li>
                   <li>
-                     <NavLink  className="hover:text-amber-400">
+                     <NavLink className="hover:text-amber-400">
                         Dashboard
                      </NavLink>
                   </li>

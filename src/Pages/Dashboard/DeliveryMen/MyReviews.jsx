@@ -22,7 +22,7 @@ const MyReviews = () => {
          return data;
       },
    });
-   console.log(reviews);
+   // console.log(reviews);
 
    if (isLoading || isPending) return <LoadingSpinner />;
    return (

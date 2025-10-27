@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Field, FieldSeparator } from '@/components/ui/field';
 import useAuth from '@/hooks/Custom/useAuth';
 import useAxiosPublic from '@/hooks/Custom/useAxiosPublic';
-import { successToast } from '@/Utilities/Toasts';
+import { errorToast, successToast } from '@/Utilities/Toasts';
 
 import React from 'react';
 import { FcGoogle } from 'react-icons/fc';
@@ -15,7 +15,7 @@ const GoogleSignInButton = ({ from }) => {
    const handleGoogleLogin = async () => {
       try {
          const { user } = await googleSignIn();
-         console.log(user.email, user.photoURL);
+         // console.log(user.email, user.photoURL);
          const { data } = await axiosPublic.post('/users', {
             name: user?.displayName,
             email: user?.email,
@@ -23,11 +23,12 @@ const GoogleSignInButton = ({ from }) => {
             role: 'User',
             createdAt: new Date(),
          });
-         console.log(data);
+         // console.log(data);
          successToast('Login Successful');
          navigate(from, { replace: true });
       } catch (err) {
-         console.log(err);
+         // console.log(err);
+         errorToast(err.message || 'Something went wrong!')
          setLoading(false);
       }
    };

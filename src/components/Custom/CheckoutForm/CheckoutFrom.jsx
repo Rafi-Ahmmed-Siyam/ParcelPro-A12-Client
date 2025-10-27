@@ -5,15 +5,18 @@ import { Button } from '../../ui/button';
 import './CheckoutStyles.css';
 import useAxiosSecure from '@/hooks/Custom/useAxiosSecure';
 import useAuth from '@/hooks/Custom/useAuth';
-import { successToast } from '@/Utilities/Toasts';
+import { errorToast, successToast } from '@/Utilities/Toasts';
 import { useNavigate } from 'react-router-dom';
 import useLoading from '@/hooks/Custom/useLoading';
+import { LiaSpinnerSolid } from 'react-icons/lia';
+import useUserParcels from '@/hooks/Custom/useUserParcels';
 const CheckoutFrom = ({ parcelId, parcel }) => {
    const navigate = useNavigate();
    const { user } = useAuth();
    const axiosSecure = useAxiosSecure();
    const { reqLoading, setReqLoading } = useLoading();
    const [clientSecret, setClientSecret] = useState('');
+   const [, refetch] = useUserParcels();
 
    useEffect(() => {
       getPaymentIntent();
@@ -35,19 +38,29 @@ const CheckoutFrom = ({ parcelId, parcel }) => {
    const handleCheckout = async (e) => {
       e.preventDefault();
 
-      if (!stripe || !elements) return;
+      if (!stripe || !elements) {
+         setReqLoading(false);
+         return;
+      }
+      setReqLoading(true);
       const card = elements.getElement(CardElement);
-      if (card == null) return;
+      if (card == null) {
+         setReqLoading(false);
+         return;
+      }
       const { error, paymentMethod } = await stripe.createPaymentMethod({
          type: 'card',
          card,
       });
       if (error) {
-         console.log('Payment Error', error);
+         // console.log('Payment Error', error);
+         errorToast('Your payment failed. Try again');
+         setReqLoading(false);
+         return;
       } else {
-         console.log('Payment Method', paymentMethod);
+         // console.log('Payment Method', paymentMethod);
       }
-      setReqLoading(true);
+      // setReqLoading(true);
       // Confirm card payment
       const confirmPayment = await stripe.confirmCardPayment(clientSecret, {
          payment_method: {
@@ -80,24 +93,23 @@ const CheckoutFrom = ({ parcelId, parcel }) => {
                `/parcels-paid/${parcelId}`
             );
 
-            console.log(updateResult);
+            // console.log(updateResult);
             if (data.insertedId && updateResult.modifiedCount > 0) {
                successToast(
                   `Payment Successful! Transaction ID: ${confirmPayment?.paymentIntent?.id}`
                );
                card.clear();
                setReqLoading(false);
+               refetch()
                navigate('/dashboard/paymentHistory', {
                   state: { paymentSuccess: true },
                });
             }
          } catch (err) {
             setReqLoading(false);
-            console.log(err);
+            // console.log(err);
          }
       }
-
-      console.log(confirmPayment.paymentIntent.status);
    };
 
    return (
@@ -121,11 +133,17 @@ const CheckoutFrom = ({ parcelId, parcel }) => {
             />
             <div className="flex justify-center items-center">
                <Button
-                  disabled={!stripe || !clientSecret}
-                  className={'px-20 py-5 rounded-sm'}
+                  disabled={!stripe || !clientSecret || reqLoading}
+                  className={
+                     'w-40 py-5 rounded-sm bg-green-500 hover:bg-green-400 font-bold text-base'
+                  }
                   type="submit"
                >
-                  Pay
+                  {reqLoading ? (
+                     <LiaSpinnerSolid className="animate-spin" />
+                  ) : (
+                     'Pay'
+                  )}
                </Button>
             </div>
          </form>

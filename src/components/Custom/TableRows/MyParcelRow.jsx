@@ -7,8 +7,9 @@ import useAxiosSecure from '@/hooks/Custom/useAxiosSecure';
 import { errorToast, successToast } from '@/Utilities/Toasts';
 import { Link } from 'react-router-dom';
 import DeleteModal from '../Modals/DeleteModal';
-import GiveReviewMOdal from '../Modals/GiveReviewMOdal';
+
 import { Badge } from '@/components/ui/badge';
+import GiveReviewModal from '../Modals/GiveReviewModal';
 
 const MyParcelRow = ({ parcel, refetch }) => {
    const {
@@ -30,13 +31,15 @@ const MyParcelRow = ({ parcel, refetch }) => {
    const handleDeleteParcel = async () => {
       try {
          const { data } = await axiosSecure.delete(`/parcels/${_id}`);
-         console.log(data);
+         // console.log(data);
          if (data.deletedCount > 0) {
             refetch();
+            setOpen(false);
             successToast('Parcel Deleted Successful!');
          }
       } catch (err) {
-         console.log(err);
+         errorToast(err.message || 'Something Went Wrong');
+         // console.log(err);
       }
    };
 
@@ -156,7 +159,7 @@ const MyParcelRow = ({ parcel, refetch }) => {
             setOpenModal={setOpen}
             deleteConfirm={handleDeleteParcel}
          />
-         <GiveReviewMOdal
+         <GiveReviewModal
             openReview={openReview}
             setOpenReview={setOpenReview}
             deliveryManId={deliveryManId}

@@ -28,7 +28,7 @@ import useRole from '@/hooks/Custom/useRole';
 import useAxiosSecure from '@/hooks/Custom/useAxiosSecure';
 import useLoading from '@/hooks/Custom/useLoading';
 import LoadingSpinner from '@/components/LoadingSpinner';
-import { successToast } from '@/Utilities/Toasts';
+import { errorToast, successToast } from '@/Utilities/Toasts';
 
 const MyProfile = () => {
    const { user, updateUserProfile, setLoading } = useAuth();
@@ -57,9 +57,9 @@ const MyProfile = () => {
          return;
       }
       setReqLoading(true);
-      console.log(user.displayName);
+      // console.log(user.displayName);
       const imgUrl = await uploadImage(selectedFile);
-      console.log(imgUrl);
+      // console.log(imgUrl);
 
       try {
          await updateUserProfile(user.displayName, imgUrl);
@@ -74,7 +74,7 @@ const MyProfile = () => {
          }
       } catch (err) {
          // console.log(err)
-         console.log(err.message || 'Something went Wrong!');
+         errorToast(err.message || 'Something went Wrong!');
       } finally {
          setIsModalOpen(false);
          setInterval(setLoading(false), 500);

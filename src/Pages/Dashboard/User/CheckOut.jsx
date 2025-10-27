@@ -34,7 +34,7 @@ const CheckOut = () => {
             {' '}
             {/* 300px = approx height of all boxes + form */}
             <h1 className="text-center text-3xl font-bold text-slate-800 mb-7">
-               Payment
+               Checkout
             </h1>
             {/* Parcel Info Boxes */}
             <div className="max-w-[500px] mx-auto">
@@ -48,7 +48,9 @@ const CheckOut = () => {
                      </span>
                   </div>
                   <div className="bg-slate-200 border-2 text-slate-800 py-2 rounded-sm w-1/2 text-center">
-                     <span>Total Price: {price} Tk</span>
+                     <span className="text-red-500 font-semibold">
+                        Total Payment: {price} Tk
+                     </span>
                   </div>
                </div>
             </div>

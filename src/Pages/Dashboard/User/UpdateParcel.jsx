@@ -11,7 +11,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import useAxiosSecure from '@/hooks/Custom/useAxiosSecure';
 import useUserParcels from '@/hooks/Custom/useUserParcels';
-import { successToast } from '@/Utilities/Toasts';
+import { errorToast, successToast } from '@/Utilities/Toasts';
 
 const UpdateParcel = () => {
    const axiosSecure = useAxiosSecure();
@@ -139,9 +139,10 @@ const UpdateParcel = () => {
             successToast('Your parcel Successfully updated');
          }
          // myParcel
-         console.log(data);
+         // console.log(data);
       } catch (err) {
-         console.log(err);
+         // console.log(err);
+         errorToast(err.message || 'Something went wrong! Try Again');
       }
    };
 

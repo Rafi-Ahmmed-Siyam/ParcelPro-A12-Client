@@ -8,20 +8,28 @@ import {
 } from '@/components/ui/table';
 import { useWindowSize } from 'react-use';
 import Confetti from 'react-confetti';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import useAxiosSecure from '@/hooks/Custom/useAxiosSecure';
 import useAuth from '@/hooks/Custom/useAuth';
 import PaymentHistoryRow from '@/components/Custom/TableRows/PaymentHistoryRow';
+import useRole from '@/hooks/Custom/useRole';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 const PaymentHistory = () => {
    const axiosSecure = useAxiosSecure();
+   const navigate = useNavigate();
    const { user } = useAuth();
+   const { role } = useRole();
    const location = useLocation();
    const paymentStatus = location?.state?.paymentSuccess;
    const { width, height } = useWindowSize();
    // get payment data
-   const { data: payments = [] } = useQuery({
+   const {
+      data: payments = [],
+      isLoading,
+      isPending,
+   } = useQuery({
       queryKey: ['payments', user?.email],
       queryFn: async () => {
          const { data } = await axiosSecure.get(`/payments/${user.email}`);
@@ -29,7 +37,12 @@ const PaymentHistory = () => {
       },
       enabled: !!user.email,
    });
-   
+
+   if (role.role === 'Admin') return navigate('/dashboard/statistics');
+   if (role.role === 'DeliveryMen')
+      return navigate('/dashboard/myDeliveryList');
+
+   if ((isLoading, isPending)) return <LoadingSpinner />;
    return (
       <Container>
          <h1 className="text-2xl md:text-3xl font-bold text-slate-900">
@@ -41,7 +54,7 @@ const PaymentHistory = () => {
                width={width}
                height={height}
                recycle={false}
-               numberOfPieces={400}
+               numberOfPieces={500}
             />
          )}
 
@@ -76,7 +89,10 @@ const PaymentHistory = () => {
                      </TableRow>
                   ) : (
                      payments.map((payment) => (
-                        <PaymentHistoryRow key={payment._id} payment={payment} />
+                        <PaymentHistoryRow
+                           key={payment._id}
+                           payment={payment}
+                        />
                      ))
                   )}
                </TableBody>

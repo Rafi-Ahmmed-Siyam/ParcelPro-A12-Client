@@ -9,12 +9,11 @@ import {
    DropdownMenuTrigger,
 } from '../../ui/dropdown-menu';
 import { Bell, LogOut } from 'lucide-react';
-import navIcon from '../../../assets/icons/express-delivery.png';
+import navIcon from '../../../assets/Icons/expressDelivery.png';
 import { Button } from '../../ui/button';
 import useAuth from '@/hooks/Custom/useAuth';
 import { MdOutlineSpaceDashboard } from 'react-icons/md';
 import useRole from '@/hooks/Custom/useRole';
-
 
 const NavbarHome = () => {
    const { user, logOut } = useAuth();
@@ -22,8 +21,8 @@ const NavbarHome = () => {
 
    const getActiveClass = (isActive) =>
       isActive
-         ? 'text-amber-300 text-base font-semibold' 
-         : 'text-white text-base font-normal'; 
+         ? 'text-amber-300 text-base font-semibold'
+         : 'text-white text-base font-normal';
 
    const userLink = (
       <>
@@ -131,7 +130,9 @@ const NavbarHome = () => {
 
                            <Button
                               onClick={() => logOut()}
-                              className={'w-full cursor-pointer mt-3'}
+                              className={
+                                 'w-full cursor-pointer mt-3 bg-red-500 hover:bg-red-400'
+                              }
                            >
                               <LogOut className="size-4" /> Logout
                            </Button>

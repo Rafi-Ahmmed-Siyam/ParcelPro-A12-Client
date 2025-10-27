@@ -17,7 +17,7 @@ export const uploadImage = async (imageFile) => {
 
       return data.data.url;
    } catch (err) {
-      console.log(err);
+      // console.log(err);
       return null;
    }
 };

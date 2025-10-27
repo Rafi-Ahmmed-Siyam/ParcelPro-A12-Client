@@ -34,14 +34,12 @@ const NumberInputModal = ({ open, isOpen, role, reloadRole }) => {
       setError('');
       setReqLoading(true);
       // Send patch req and if success reload role
-      console.log();
       const { data } = await axiosSecure.patch('/deliveryman', { id, phone });
-      console.log(data);
+      // console.log(data);
       if (data.modifiedCount > 0) {
          setReqLoading(false);
          setPhone('');
          reloadRole();
-         reloadDeliveryMan();
          successToast('You are now verified as a Delivery man');
       }
    };

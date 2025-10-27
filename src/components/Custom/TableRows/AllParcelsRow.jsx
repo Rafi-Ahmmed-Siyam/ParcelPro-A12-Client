@@ -31,7 +31,7 @@ const AllParcelsRow = ({ parcel }) => {
 
    const handleAssign = async () => {
       if (!approxDate || !deliveryManId) return;
-      console.log(approxDate, 'assign btn click');
+      // console.log(approxDate, 'assign btn click');
       try {
          // send Patch req
          const { data } = await axiosSecure.patch('/parcels/assign', {
@@ -39,7 +39,7 @@ const AllParcelsRow = ({ parcel }) => {
             deliveryManId,
             approxDeliveryDate: approxDate,
          });
-         console.log(data);
+         // console.log(data);
          if (data?.modifiedCount > 0) {
             refetch();
             reloadParcelData();
@@ -48,9 +48,9 @@ const AllParcelsRow = ({ parcel }) => {
             successToast('Delivery man Assigned Successful');
          }
       } catch (err) {
-         errorToast('Some thing went wrong! Try again');
+         errorToast(err.message ||'Some thing went wrong! Try again');
          setOpenModal(false);
-         console.log(err);
+         // console.log(err);
       }
    };
    return (

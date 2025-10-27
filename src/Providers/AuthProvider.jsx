@@ -64,12 +64,12 @@ const AuthProvider = ({ children }) => {
 
             setUser(user);
             setLoading(false);
-            console.log('CurrentUser', user);
+            // console.log('CurrentUser', user);
          } else {
             localStorage.removeItem('token');
             setLoading(false);
             setUser(null);
-            console.log('User Logout');
+            // console.log('User Logout');
          }
       });
       return () => unSubscribe();

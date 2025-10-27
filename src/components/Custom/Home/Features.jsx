@@ -19,7 +19,7 @@ const Features = () => {
          return data;
       },
    });
-   console.log(homeStats);
+   // console.log(homeStats);
    const { totalUsers, totalParcels, totalDelivered } = homeStats || {};
 
    return (

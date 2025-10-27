@@ -9,19 +9,23 @@ import { TbCurrencyTaka } from 'react-icons/tb';
 import useAxiosSecure from '@/hooks/Custom/useAxiosSecure';
 import useLoading from '@/hooks/Custom/useLoading';
 import { LiaSpinnerSolid } from 'react-icons/lia';
-import { successToast } from '@/Utilities/Toasts';
+import { errorToast, successToast } from '@/Utilities/Toasts';
 import { useNavigate } from 'react-router-dom';
 import { addHours, isBefore } from 'date-fns';
 import useParcel from '@/hooks/Custom/useParcel';
+import useRole from '@/hooks/Custom/useRole';
 
 const BookParcel = () => {
    const { user } = useAuth();
+   const { role } = useRole();
    const axiosSecure = useAxiosSecure();
    const navigate = useNavigate();
    const { reqLoading, setReqLoading } = useLoading();
    const { reloadParcelData } = useParcel();
    const [weight, setWeight] = useState(0);
    const [price, setPrice] = useState(0);
+
+   // is user Admin or DeliveryMen navigate
 
    const {
       register,
@@ -74,22 +78,24 @@ const BookParcel = () => {
 
       try {
          const { data } = await axiosSecure.post('/parcels', parcelData);
-         console.log(data);
+         // console.log(data);
          if (data?.insertedId) {
+            reloadParcelData();
             setReqLoading(false);
             reset();
             setWeight(0);
             setPrice(0);
-            reloadParcelData();
             successToast('Your Parcel Booked Successfully');
             navigate('/dashboard/myParcel');
          }
       } catch (err) {
-         console.log(err);
+         errorToast(err.message || 'Something went wrong!');
          setReqLoading(false);
       }
    };
-
+   if (role.role === 'Admin') return navigate('/dashboard/statistics');
+   if (role.role === 'DeliveryMen')
+      return navigate('/dashboard/myDeliveryList');
    return (
       <section className="min-h-[calc(100vh-45px)] flex items-center justify-center  p-6">
          <div className="w-full px-5 md:px-14 lg:px-0 lg:max-w-4xl">
@@ -267,7 +273,11 @@ const BookParcel = () => {
                   {/* === Submit Button === */}
                   <div className="flex flex-1 justify-center mt-4 ">
                      <Button
-                        disabled={reqLoading}
+                        disabled={
+                           reqLoading ||
+                           role.role === 'Admin' ||
+                           role.role === 'DeliveryMen'
+                        }
                         className="w-full md:w-auto lg:w-full py-6 cursor-pointer"
                      >
                         {reqLoading ? (

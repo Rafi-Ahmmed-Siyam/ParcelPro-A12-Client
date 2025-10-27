@@ -22,7 +22,7 @@ const useAxiosSecure = () => {
             return res;
          },
          async (error) => {
-            console.log(`Error from Interceptor`, error);
+            // console.log(`Error from Interceptor`, error);
             errorToast(
                error.response.data.message || error.response.statusText
             );
