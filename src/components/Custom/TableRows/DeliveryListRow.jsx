@@ -8,8 +8,10 @@ import useUserParcels from '@/hooks/Custom/useUserParcels';
 import useParcel from '@/hooks/Custom/useParcel';
 import { errorToast, successToast } from '@/Utilities/Toasts';
 import useRole from '@/hooks/Custom/useRole';
+import DeliveryLocationModal from '../Modals/DeliveryLocationModal';
 
 const DeliveryListRow = ({ delivery, reloadDeliveries }) => {
+   // console.log(delivery);
    const axiosSecure = useAxiosSecure();
    const { role } = useRole();
    // console.log(role)
@@ -23,11 +25,14 @@ const DeliveryListRow = ({ delivery, reloadDeliveries }) => {
       senderPhone,
       senderName,
       bookingStatus,
+      deliveryLatitude,
+      deliveryLongitude,
    } = delivery || {};
    const [open, setOpen] = useState(false);
    const [, refetch] = useUserParcels();
    const { reloadParcelData } = useParcel();
    const [status, setStatus] = useState('');
+   const [openLocation, setOpenLocation] = useState(false);
 
    const hanDleUpdateStatus = async () => {
       try {
@@ -51,73 +56,81 @@ const DeliveryListRow = ({ delivery, reloadDeliveries }) => {
    };
 
    return (
-      <TableRow>
-         {/* Sender Name */}
-         <TableCell>{senderName}</TableCell>
-         {/* recei Phone */}
-         <TableCell>{receiverName}</TableCell>
-         {/*sender phone */}
-         <TableCell>{senderPhone}</TableCell>
-         {/* Req. Del. Date */}
-         <TableCell>{formateDate(deliveryDate)}</TableCell>
-         {/* appox delevery date */}
-         <TableCell>{formateDate(approxDeliveryDate)}</TableCell>
-         {/* Receiver's phone */}
-         <TableCell>{receiverPhone}</TableCell>
-         {/* Receiver's address */}
-         <TableCell>{deliveryAddress}</TableCell>
+      <>
+         <TableRow>
+            {/* Sender Name */}
+            <TableCell>{senderName}</TableCell>
+            {/* recei Phone */}
+            <TableCell>{receiverName}</TableCell>
+            {/*sender phone */}
+            <TableCell>{senderPhone}</TableCell>
+            {/* Req. Del. Date */}
+            <TableCell>{formateDate(deliveryDate)}</TableCell>
+            {/* appox delevery date */}
+            <TableCell>{formateDate(approxDeliveryDate)}</TableCell>
+            {/* Receiver's phone */}
+            <TableCell>{receiverPhone}</TableCell>
+            {/* Receiver's address */}
+            <TableCell>{deliveryAddress}</TableCell>
 
-         {/* Location button */}
-         <TableCell>
-            <Button
-               size="sm"
-               variant="secondary"
-               className={'bg-blue-500 hover:bg-blue-600 text-white'}
-            >
-               Location
-            </Button>
-         </TableCell>
+            {/* Location button */}
+            <TableCell>
+               <Button
+                  size="sm"
+                  variant="secondary"
+                  className={'bg-blue-500 hover:bg-blue-600 text-white'}
+                  onClick={() => setOpenLocation(true)}
+               >
+                  Location
+               </Button>
+            </TableCell>
 
-         {/*  Cancel button */}
-         <TableCell>
-            <Button
-               disabled={
-                  bookingStatus === 'Canceled' || bookingStatus === 'Delivered'
-               }
-               onClick={() => {
-                  setStatus('Canceled'), setOpen(true);
-               }}
-               size="sm"
-               variant="destructive"
-            >
-               Cancel
-            </Button>
-         </TableCell>
+            {/*  Cancel button */}
+            <TableCell>
+               <Button
+                  disabled={
+                     bookingStatus === 'Canceled' ||
+                     bookingStatus === 'Delivered'
+                  }
+                  onClick={() => {
+                     setStatus('Canceled'), setOpen(true);
+                  }}
+                  size="sm"
+                  variant="destructive"
+               >
+                  Cancel
+               </Button>
+            </TableCell>
 
-         {/* Deliver button */}
-         <TableCell>
-            <Button
-               disabled={bookingStatus === 'Delivered'}
-               onClick={() => {
-                  setStatus('Delivered'), setOpen(true);
-               }}
-               size="sm"
-               variant="success"
-               className={'bg-green-600 hover:bg-green-700 text-white'}
-            >
-               Delivered
-            </Button>
-            <ConfirmModal
-               open={open}
-               setOpen={setOpen}
-               heading={'Confirm Status Change'}
-               description={
-                  'Are you sure you want to update the status of this parcel?'
-               }
-               handleConfirm={hanDleUpdateStatus}
-            />
-         </TableCell>
-      </TableRow>
+            {/* Deliver button */}
+            <TableCell>
+               <Button
+                  disabled={bookingStatus === 'Delivered'}
+                  onClick={() => {
+                     setStatus('Delivered'), setOpen(true);
+                  }}
+                  size="sm"
+                  variant="success"
+                  className={'bg-green-600 hover:bg-green-700 text-white'}
+               >
+                  Delivered
+               </Button>
+               <ConfirmModal
+                  open={open}
+                  setOpen={setOpen}
+                  heading={'Confirm Status Change'}
+                  description={
+                     'Are you sure you want to update the status of this parcel?'
+                  }
+                  handleConfirm={hanDleUpdateStatus}
+               />
+            </TableCell>
+         </TableRow>
+         <DeliveryLocationModal
+            openLocation={openLocation}
+            setOpenLocation={setOpenLocation}
+         />
+      </>
    );
 };
 

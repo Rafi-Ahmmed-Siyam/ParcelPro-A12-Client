@@ -39,7 +39,7 @@ const DeliveryList = () => {
    if ((isLoading, isPending)) return <LoadingSpinner />;
    return (
       <Container>
-         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6 bg-[#F1F5F9] border px-3 py-4 rounded-sm sticky top-0 z-10">
             <h1 className="text-2xl md:text-3xl font-bold text-slate-900">
                My Delivery List
             </h1>
@@ -63,6 +63,26 @@ const DeliveryList = () => {
                   </TableRow>
                </TableHeader>
 
+               <TableBody>
+                  {!deliveries?.length ? (
+                     <TableRow>
+                        <td
+                           colSpan={10}
+                           className="text-center py-6 text-slate-500"
+                        >
+                           No deliveries Assigned Today
+                        </td>
+                     </TableRow>
+                  ) : (
+                     deliveries.map((delivery) => (
+                        <DeliveryListRow
+                           key={delivery._id}
+                           delivery={delivery}
+                           reloadDeliveries={reloadDeliveries}
+                        />
+                     ))
+                  )}
+               </TableBody>
                <TableBody>
                   {!deliveries?.length ? (
                      <TableRow>

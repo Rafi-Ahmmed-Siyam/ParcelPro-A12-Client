@@ -42,68 +42,67 @@ const AllParcels = () => {
    return (
       <Container>
          {/* Header Section */}
-         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-            <h1 className="text-2xl md:text-3xl font-bold text-slate-900">
-               All Parcels
-            </h1>
-         </div>
-         {/* Search by Date Range Section */}
-         <div className="border border-slate-200 rounded-md p-5 mb-6 bg-slate-50">
-            <h2 className="text-base font-semibold text-slate-700 mb-4">
-               Search by Requested Delivery Date Range
-            </h2>
+         <section className='sticky top-0 z-10'>
+            <div className="border border-slate-200 rounded-md p-5 mb-6 bg-slate-50">
+               <h1 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4">
+                  All Parcels
+               </h1>
+               <h2 className="text-base font-semibold text-slate-700 mb-2">
+                  Search by Requested Delivery Date Range
+               </h2>
 
-            <div className="flex flex-col sm:flex-row sm:items-end sm:gap-6 gap-4">
-               <div className="flex flex-col w-full md:w-[250px]">
-                  <label
-                     htmlFor="fromDate"
-                     className="text-sm font-medium text-slate-600 mb-1"
-                  >
-                     From Date
-                  </label>
-                  <Input
-                     id="fromDate"
-                     type="date"
-                     className="rounded-sm py-2 w-full"
-                     value={fromDate}
-                     onChange={(e) => setFromDate(e.target.value)}
-                  />
-               </div>
+               <div className="flex flex-col sm:flex-row sm:items-end sm:gap-6 gap-4">
+                  <div className="flex flex-col w-full md:w-[250px]">
+                     <label
+                        htmlFor="fromDate"
+                        className="text-sm font-medium text-slate-600 mb-1"
+                     >
+                        From Date
+                     </label>
+                     <Input
+                        id="fromDate"
+                        type="date"
+                        className="rounded-sm py-2 w-full"
+                        value={fromDate}
+                        onChange={(e) => setFromDate(e.target.value)}
+                     />
+                  </div>
 
-               <div className="flex flex-col w-full md:w-[250px]">
-                  <label
-                     htmlFor="toDate"
-                     className="text-sm font-medium text-slate-600 mb-1"
-                  >
-                     To Date
-                  </label>
-                  <Input
-                     id="toDate"
-                     type="date"
-                     value={toDate}
-                     className="rounded-sm py-2 w-full"
-                     onChange={(e) => setToDate(e.target.value)}
-                  />
-               </div>
+                  <div className="flex flex-col w-full md:w-[250px]">
+                     <label
+                        htmlFor="toDate"
+                        className="text-sm font-medium text-slate-600 mb-1"
+                     >
+                        To Date
+                     </label>
+                     <Input
+                        id="toDate"
+                        type="date"
+                        value={toDate}
+                        className="rounded-sm py-2 w-full"
+                        onChange={(e) => setToDate(e.target.value)}
+                     />
+                  </div>
 
-               <div className="flex items-center">
-                  <Button
-                     onClick={handleSearch}
-                     className={'bg-blue-600 text-white hover:bg-blue-700'}
-                  >
-                     Search
-                  </Button>
-                  <Button
-                     onClick={handleReset}
-                     className={
-                        'ml-2 bg-gray-300 text-gray-800 hover:bg-gray-400'
-                     }
-                  >
-                     Reset
-                  </Button>
+                  <div className="flex items-center">
+                     <Button
+                        onClick={handleSearch}
+                        className={'bg-blue-600 text-white hover:bg-blue-700'}
+                     >
+                        Search
+                     </Button>
+                     <Button
+                        onClick={handleReset}
+                        className={
+                           'ml-2 bg-gray-300 text-gray-800 hover:bg-gray-400'
+                        }
+                     >
+                        Reset
+                     </Button>
+                  </div>
                </div>
             </div>
-         </div>
+         </section>
 
          {/* table Section */}
          <div className="border-2 border-slate-200 rounded-sm w-full px-2 lg:px-4 py-2.5 overflow-x-auto">
